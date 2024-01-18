@@ -1,6 +1,5 @@
-import { Request } from "express";
 import morgan from "morgan";
-import { consoleLogger } from "./console-logger.util";
+import { consoleLogger } from "./console-logger.util.js";
 
 export const getDefaultLogger = () => {
   return consoleLogger;

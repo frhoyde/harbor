@@ -4,7 +4,8 @@ import morganBody from "morgan-body";
 
 
 import { env } from "./config.js";
-import { getRequestLogger } from "./utils/log";
+import { httpLogger } from "./utils/log/http-logger.util.js";
+import { getRequestLogger } from "./utils/log/index.js";
 // Router imports
 
 // Initialization
@@ -32,7 +33,7 @@ morganBody(app, {
     maxBodyLength: 1024
 });
 app.use(httpLogger);
-app.use(getRequestLogger());
+app.use(getRequestLogger);
 // Routes
 
 app.get("/are-you-ok", (req, res) => {
