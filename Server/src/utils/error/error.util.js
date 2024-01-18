@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { ZodError } from "zod";
-import { logger } from "../log/logger.util";
+import { logger } from "../log/logger.util.js";
 
 export class ErrorResponseObject {
   statusCode;
@@ -20,12 +19,6 @@ export const throwServerError = (error, res) => {
     errorResponseObject = {
       statusCode: 500,
       responseMessage: "Internal server error.",
-      logMessage: error
-    };
-  } else if (error instanceof ZodError) {
-    errorResponseObject = {
-      statusCode: 400,
-      responseMessage: "Invalid request format",
       logMessage: error
     };
   } else {
