@@ -8,5 +8,5 @@ services:
       - 27017:27017
     restart: always
     volumes:
-      - .config/mongod.conf:/etc/mongod.conf
+      - ./config/mongod.conf:/etc/mongod.conf
     entrypoint: ["mongod", "--auth", "--config", "/etc/mongod.conf"]
