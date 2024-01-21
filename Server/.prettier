@@ -1,0 +1,9 @@
+{
+	"semi": true,
+	"trailingComma": "none",
+	"singleQuote": false,
+	"printWidth": 100,
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
+	}
+}

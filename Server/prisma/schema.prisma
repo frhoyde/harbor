@@ -10,8 +10,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
+model Facility {
+  uuid           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  address        String
+  websiteUrl     String
+  contact        Contact
+  operatingHours OperatingHours
+  snapshots      Snapshot[]
+}
+
+type Contact {
+  phone String
+  email String
+}
+
+type OperatingHours {
+  Monday    String
+  Tuesday   String
+  Wednesday String
+  Thursday  String
+  Friday    String
+  Saturday  String
+  Sunday    String
+}
+
+model Snapshot {
+  snapshotUuid String        @id @default(auto()) @map("_id") @db.ObjectId
+  snapshotAt   DateTime
+  storageUnits StorageUnit[]
+  document     Facility      @relation(fields: [documentId], references: [uuid])
+  documentId   String        @db.ObjectId
+}
+
+model StorageUnit {
+  uuid       String   @id @default(auto()) @map("_id") @db.ObjectId
+  size       String
+  type       String
+  price      Float
+  features   String[]
+  special    String
+  snapshot   Snapshot @relation(fields: [snapshotId], references: [snapshotUuid])
+  snapshotId String   @db.ObjectId
 }
