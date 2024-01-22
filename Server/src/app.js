@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import morganBody from "morgan-body";
+import minifyHTML from "express-minify-html";
 
 import { env } from "./config.js";
 import { httpLogger } from "./utils/log/http-logger.util.js";
@@ -23,6 +24,22 @@ morganBody(app, {
 	logIP: false,
 	maxBodyLength: 1024,
 });
+
+app.use(
+	minifyHTML({
+		override: true,
+		exception_url: false,
+		htmlMinifier: {
+			removeComments: true,
+			collapseWhitespace: true,
+			collapseBooleanAttributes: true,
+			removeAttributeQuotes: true,
+			removeEmptyAttributes: true,
+			minifyJS: true,
+		},
+	})
+);
+
 // Routes
 app.use("/scrape", scrapeRouter);
 app.get("/are-you-ok", (req, res) => {
