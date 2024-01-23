@@ -14,7 +14,6 @@ app.listen(app.get("port"), async () => {
 		logger.info(
 			"Database connection has been established."
 		);
-		await seedDataBase();
 	} catch (error) {
 		logger.error(
 			"Database connection could not be established."
@@ -22,6 +21,7 @@ app.listen(app.get("port"), async () => {
 	}
 
 	try {
+		// await seedDataBase();
 	} catch (error) {
 		logger.error(
 			"Database could not be seeded.",

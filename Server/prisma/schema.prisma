@@ -12,7 +12,7 @@ datasource db {
 
 model Facility {
   uuid           String         @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
+  name           String         @unique
   address        String
   websiteUrl     String
   contact        Contact
@@ -38,10 +38,10 @@ type OperatingHours {
 
 model Snapshot {
   snapshotUuid String        @id @default(auto()) @map("_id") @db.ObjectId
-  snapshotAt   DateTime
+  snapshotAt   DateTime      @default(now())
   storageUnits StorageUnit[]
-  document     Facility      @relation(fields: [documentId], references: [uuid])
-  documentId   String        @db.ObjectId
+  facility     Facility      @relation(fields: [facilityName], references: [name])
+  facilityName String
 }
 
 model StorageUnit {

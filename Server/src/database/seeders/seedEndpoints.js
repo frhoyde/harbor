@@ -35,9 +35,14 @@ export const seedEndpoints = async () => {
 		"https://www.storplaceselfstorage.com/storage-units/tennessee/hendersonville/storplace-of-hendersonville-347040/",
 	];
 
-	const endpoints = urls.map((url) => {
+	const storageLocations = urls.map((url) => {
 		return {
-			url,
+			url: url,
+			facilityName: "storplace",
 		};
 	});
+	const seededEndpoints =
+		await databaseClient.endPoints.createMany({
+			data: storageLocations,
+		});
 };

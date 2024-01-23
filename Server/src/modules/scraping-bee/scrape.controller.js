@@ -1,29 +1,10 @@
 import { scrapeService } from "./scrape.service.js";
 export const scrapeController = {
-	scrapeOneUrl: async (req, res) => {
+	scrapeStorPlace: async (req, res) => {
 		try {
-			let data;
-			scrapeService
-				.getScrapedDOM(
-					"https://www.storplaceselfstorage.com/storage-units/kentucky/bowling-green/storplace-of-greenwood-347038/"
-				)
-				.then(function (response) {
-					let decoder = new TextDecoder();
-					let text = decoder.decode(
-						response.data
-					);
-					data = scrapeService.minifyHTML(text);
-					let extractedStorePlacedata =
-						scrapeService.extractStorePlace(data);
-					res
-						.status(200)
-						.send(extractedStorePlacedata);
-				})
-				.catch((e) =>
-					console.log(
-						"A problem occurs : " + e.message
-					)
-				);
+			const snapshots =
+				await scrapeService.scrapeFullStorPlace();
+			return res.status(200).send(snapshots);
 		} catch (error) {
 			console.log(error);
 		}

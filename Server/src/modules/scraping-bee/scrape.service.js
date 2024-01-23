@@ -1,11 +1,77 @@
 import htmlMinifier from "html-minifier";
 import scrapingbee from "scrapingbee";
-import { exportToJSONL } from "../../utils/extracting/exporter.js";
 import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorplaceData } from "../../utils/extracting/storplace.js";
 import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.js";
 import jsdom from "jsdom";
+import { databaseClient } from "../../database/index.js";
 export const scrapeService = {
+	scrapeFullStorPlace: async () => {
+		try {
+			const urls =
+				await databaseClient.endPoints.findMany({
+					where: {
+						facilityName: "storPlace",
+					},
+				});
+
+			const storageUnits = await Promise.all(
+				urls.map((url) => {
+					return scrapeService.scrapeStorPlaceOnce(
+						url.url
+					);
+				})
+			);
+
+			const snapshots =
+				await databaseClient.snapshot.create({
+					data: {
+						storageUnits: {
+							create: storageUnits,
+						},
+						facility: {
+							connect: {
+								facilityName: "storPlace",
+							},
+						},
+					},
+				});
+
+			return snapshots;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	scrapeStorPlaceOnce: () => {
+		let extractedStorePlacedata;
+		try {
+			let data;
+			scrapeService
+				.getScrapedDOM(
+					"https://www.storplaceselfstorage.com/storage-units/kentucky/bowling-green/storplace-of-greenwood-347038/"
+				)
+				.then(function (response) {
+					let decoder = new TextDecoder();
+					let text = decoder.decode(
+						response.data
+					);
+					data = scrapeService.minifyHTML(text);
+					extractedStorePlacedata =
+						scrapeService.extractStorePlace(data);
+				})
+				.catch((e) =>
+					console.log(
+						"A problem occurs : " + e.message
+					)
+				);
+
+			return extractedStorePlacedata;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
 	getScrapedDOM: async (url) => {
 		var client =
 			new scrapingbee.ScrapingBeeClient(
@@ -18,6 +84,7 @@ export const scrapeService = {
 
 		return response;
 	},
+
 	minifyHTML: (scrapedHtml) => {
 		const minifiedHtml = htmlMinifier.minify(
 			scrapedHtml,
