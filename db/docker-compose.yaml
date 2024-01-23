@@ -8,5 +8,5 @@ services:
       - 27117:27017
     restart: always
     volumes:
-      - ./clusters/db1:/data/db
+      - ./clusters/data:/data/db
     entrypoint: ["mongod", "--auth", "--bind_ip_all" ]
