@@ -18,6 +18,7 @@ model Facility {
   contact        Contact
   operatingHours OperatingHours
   snapshots      Snapshot[]
+  EndPoints      EndPoints[]
 }
 
 type Contact {
@@ -52,4 +53,12 @@ model StorageUnit {
   special    String
   snapshot   Snapshot @relation(fields: [snapshotId], references: [snapshotUuid])
   snapshotId String   @db.ObjectId
+}
+
+model EndPoints {
+  uuid         String    @id @default(auto()) @map("_id") @db.ObjectId
+  url          String
+  facilityName String
+  facility     Facility? @relation(fields: [facilityId], references: [uuid])
+  facilityId   String?   @db.ObjectId
 }
