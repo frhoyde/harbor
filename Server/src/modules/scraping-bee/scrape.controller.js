@@ -13,7 +13,11 @@ export const scrapeController = {
 						response.data
 					);
 					data = scrapeService.minifyHTML(text);
-					res.status(200).send(data);
+					let extractedStorePlacedata =
+						scrapeService.extractStorePlace(data);
+					res
+						.status(200)
+						.send(extractedStorePlacedata);
 				})
 				.catch((e) =>
 					console.log(
