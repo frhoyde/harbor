@@ -1,67 +1,50 @@
-version: "3"
+version: "3.8"
+
 services:
-  rs101:
+  mongo1:
     image: percona/percona-server-mongodb:7.0
-    container_name: rs101
-    hostname: rs101
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
-      - "27017:27017"
-    networks:
-      - my-network
-    command: "--port=27017 --replSet rs"
+      - 27017:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017',priority:1},{_id:1,host:'host.docker.internal:27018',priority:0.5},{_id:2,host:'host.docker.internal:27019',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    volumes:
+      - "mongo1_data:/data/db"
+      - "mongo1_config:/data/configdb"
 
-  rs102:
+  mongo2:
     image: percona/percona-server-mongodb:7.0
-    container_name: rs102
-    hostname: rs102
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27018"]
     ports:
-      - "28017:28017"    
-    networks:
-      - my-network
-    command: "--port=28017 --replSet rs"
+      - 27018:27018
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "mongo2_data:/data/db"
+      - "mongo2_config:/data/configdb"
 
-  rs103:
+  mongo3:
     image: percona/percona-server-mongodb:7.0
-    container_name: rs103
-    hostname: rs103
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27019"]
     ports:
-      - "29017:29017"    
-    networks:
-      - my-network
-    command: "--port=29017 --replSet rs"
+      - 27019:27019
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "mongo3_data:/data/db"
+      - "mongo3_config:/data/configdb"
 
-  rs-init:
-    image: percona/percona-server-mongodb:7.0
-    container_name: rs-init
-    restart: "no"
-    networks:
-      - my-network
-    depends_on:
-      - rs101
-      - rs102
-      - rs103
-    command: >
-      mongosh --host rs101:27017 --eval 
-      '
-      config = {
-      "_id" : "rs",
-      "members" : [
-        {
-          "_id" : 0,
-          "host" : "rs101:27017"
-        },
-        {
-          "_id" : 1,
-          "host" : "rs102:28017"
-        },
-        {
-          "_id" : 2,
-          "host" : "rs103:29017"
-        }
-      ]
-      };
-      rs.initiate(config);
-      ' 
-networks:
-  my-network:
-    driver: bridge
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+  mongo1_config:
+  mongo2_config:
+  mongo3_config:
