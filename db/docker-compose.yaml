@@ -1,12 +1,67 @@
 version: "3"
-
 services:
-  mongodb:
-    image: percona/percona-server-mongodb:6.0
-    container_name: harbordb
+  rs101:
+    image: percona/percona-server-mongodb:7.0
+    container_name: rs101
+    hostname: rs101
     ports:
-      - 27117:27017
-    restart: always
-    volumes:
-      - ./clusters/data:/data/db
-    entrypoint: ["mongod", "--auth", "--bind_ip_all" ]
+      - "27017:27017"
+    networks:
+      - my-network
+    command: "--port=27017 --replSet rs"
+
+  rs102:
+    image: percona/percona-server-mongodb:7.0
+    container_name: rs102
+    hostname: rs102
+    ports:
+      - "28017:28017"    
+    networks:
+      - my-network
+    command: "--port=28017 --replSet rs"
+
+  rs103:
+    image: percona/percona-server-mongodb:7.0
+    container_name: rs103
+    hostname: rs103
+    ports:
+      - "29017:29017"    
+    networks:
+      - my-network
+    command: "--port=29017 --replSet rs"
+
+  rs-init:
+    image: percona/percona-server-mongodb:7.0
+    container_name: rs-init
+    restart: "no"
+    networks:
+      - my-network
+    depends_on:
+      - rs101
+      - rs102
+      - rs103
+    command: >
+      mongosh --host rs101:27017 --eval 
+      '
+      config = {
+      "_id" : "rs",
+      "members" : [
+        {
+          "_id" : 0,
+          "host" : "rs101:27017"
+        },
+        {
+          "_id" : 1,
+          "host" : "rs102:28017"
+        },
+        {
+          "_id" : 2,
+          "host" : "rs103:29017"
+        }
+      ]
+      };
+      rs.initiate(config);
+      ' 
+networks:
+  my-network:
+    driver: bridge
