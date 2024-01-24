@@ -8,10 +8,4 @@ COPY generate-keyfile.sh /generate-keyfile.sh
 RUN mkdir -p /opt/keyfile && \
     /bin/bash /generate-keyfile.sh
 
-# Copy the custom mongod.conf to the container's configuration directory
-COPY mongod.conf /etc/mongod.conf
-
-# Copy the mongo-init.js file to the container's initialization script directory
-COPY mongo-init.js /docker-entrypoint-initdb.d/mongo-init.js
-
-CMD ["mongod", "-f", "/etc/mongod.conf"]
+CMD ["mongod", "--auth", "--bind_ip_all","--keyFile", "/opt/keyfile/mongo-keyfile", "--replSet", "rs0", "--port", "27017"]
