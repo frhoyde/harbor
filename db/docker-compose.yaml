@@ -10,6 +10,9 @@ services:
       - my-network
     volumes:
       - db1:/data/db
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
     command: "--port=27017 --replSet rs"
 
   rs102:
