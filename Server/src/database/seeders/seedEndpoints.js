@@ -9,7 +9,7 @@ export const seedEndpoints = async () => {
 		console.log(error);
 	}
 
-	if (existingEndpoints.length > 0) {
+	if (existingEndpoints) {
 		return;
 	}
 

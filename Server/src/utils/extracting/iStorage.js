@@ -30,50 +30,44 @@ function parseIStorageData(data) {
 				).innerHTML;
 			const size = parseSize(sizeString);
 
+			console.log(size);
+
 			const type =
 				unitElement.querySelector(
 					".det"
-				).innerText;
+				).innerHTML;
 
-			const price = parseFloat(
-				unitElement
-					.querySelector(".part_item_price")
-					.innerText.replace(/[^\d.]/g, "")
-			);
+			console.log(type);
 
-			const features = Array.from(
+			const price = unitElement
+				.querySelector(".part_item_price")
+				.innerHTML.match(/\$(\d+)/)[1];
+
+			console.log(price);
+
+			const featuresString = Array.from(
 				unitElement.getElementsByClassName(
 					"det-listing"
 				)
-			)
-				.map((li) => li.innerText)
-				.pop()
-				.split(/\r?\n/);
+			).map((feature) => feature.innerHTML);
+
+			const featureDom = new JSDOM(
+				featuresString
+			);
+			const window = featureDom.window;
+			const features = Array.from(
+				window.document.querySelectorAll(
+					"li span"
+				)
+			).map((span) => span.textContent);
+			console.log(features);
 
 			const specialElement =
 				unitElement.querySelector(".part_badge");
 			const special = specialElement
 				? specialElement.querySelector("span")
 						.innerText
-				: undefined;
-
-			// Create a table row with JSON and raw HTML for each unit
-			const tableRow = `
-  <tr>
-    <td>${index + 1}</td>
-    <td><pre contenteditable="true">${JSON.stringify(
-			{
-				size,
-				type,
-				price,
-				features,
-				special,
-			},
-			null,
-			2
-		)}</pre></td>
-    <td><pre>${escapeHtml(unitElement.outerHTML)}</pre></td>
-  </tr>`;
+				: null;
 
 			competitor.storage_units.push({
 				size,
@@ -82,14 +76,6 @@ function parseIStorageData(data) {
 				features,
 				special,
 			});
-
-			// Append the table row to the result table
-			document
-				.getElementById("resultTableBody")
-				.insertAdjacentHTML(
-					"beforeend",
-					tableRow
-				);
 		}
 	);
 
@@ -108,15 +94,6 @@ function parseSize(sizeString) {
 	}
 	// Return a default size if the format is not as expected
 	return { width: 0, depth: 0 };
-}
-
-function escapeHtml(unsafe) {
-	return unsafe
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#39;");
 }
 
 export { parseIStorageData };

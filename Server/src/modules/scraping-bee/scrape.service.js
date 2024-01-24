@@ -161,7 +161,9 @@ export const scrapeService = {
 					extractedIStorageData =
 						parseIStorageData(data);
 
-					return res.status(200).send(data);
+					return res
+						.status(200)
+						.send(extractedIStorageData);
 				})
 				.catch((e) =>
 					console.log(
@@ -205,7 +207,7 @@ export const scrapeService = {
 	getScrapedDOM: async (url) => {
 		var client =
 			new scrapingbee.ScrapingBeeClient(
-				"AL5HMKKAX9TI8T15PIGUCIBT5IJL8T9AVS6ZR862288TNWGTM231CH2X7363WFQH0GULWB3YRQK4XR1H"
+				"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
 			);
 		var response = await client.get({
 			url: url,

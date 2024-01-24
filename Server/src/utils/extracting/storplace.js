@@ -43,31 +43,4 @@ function parseUnitElement(unitElement) {
 	};
 }
 
-function parseSize(sizeString) {
-	if (!sizeString) {
-		return { width: 0, depth: 0 };
-	}
-
-	const sizePattern =
-		/(\d+(?:\.\d*)?) x (\d+(?:\.\d*)?)/;
-	const match = sizeString.match(sizePattern);
-	if (match) {
-		const [, width, depth] = match;
-		return {
-			width: parseFloat(width),
-			depth: parseFloat(depth),
-		};
-	}
-	return { width: 0, depth: 0 };
-}
-
-function escapeHtml(unsafe) {
-	return unsafe
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#39;");
-}
-
 export { parseStorplaceData };
