@@ -9,4 +9,10 @@ services:
     restart: always
     volumes:
       - ./config/mongod.conf:/etc/mongod.conf
-    entrypoint: ["mongod", "--auth", "--config", "/etc/mongod.conf"]
+    entrypoint:
+      [
+        "mongod",
+        "--auth",
+        "--config",
+        "/etc/mongod.conf",
+      ]
