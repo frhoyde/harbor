@@ -12,7 +12,7 @@ services:
       - "27017:27017"
     volumes:
       - harbordb_data:/data/db
-    command: ["-f", "/etc/mongod.conf"]
+    command: ["--auth", "--bind_ip_all","--keyFile", "/opt/keyfile/mongo-keyfile", "--rplSet", "rs0" ]
 
 volumes:
   harbordb_data:
