@@ -1,78 +1,18 @@
-version: "3.8"
+version: '3.4'
+
 services:
-  harbor1:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor1
-    hostname: harbor1
+  harbordb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: harbordb
+    hostname: harbordb
+    restart: always
     ports:
       - "27017:27017"
     volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-0:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network
-    
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-
-  harbor2:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor2
-    hostname: harbor2
-    ports:
-      - "27018:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-1:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network
-  
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-
-  harbor3:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor3
-    hostname: harbor3
-    ports:
-      - "27019:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-2:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network 
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-
-  harbor4:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor4
-    hostname: harbor4
-    ports:
-      - "27020:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key.devel
-      - harbor-mongo-data-3:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-  
+      - harbordb_data:/data/db
+    command: ["-f", "/etc/mongod.conf"]
 
 volumes:
-  harbor-mongo-data-0:
-  harbor-mongo-data-1:
-  harbor-mongo-data-2:
-  harbor-mongo-data-3:
-
-networks:
-  harbor-network:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.10.5.0/24
+  harbordb_data:
