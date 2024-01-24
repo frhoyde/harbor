@@ -19,7 +19,7 @@ services:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --smallfiles --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor2:
@@ -35,7 +35,7 @@ services:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --smallfiles --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor3:
@@ -51,7 +51,7 @@ services:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --smallfiles --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor4:
@@ -67,7 +67,7 @@ services:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --smallfiles --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   
