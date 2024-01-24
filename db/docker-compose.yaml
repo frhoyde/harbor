@@ -36,9 +36,9 @@ services:
       - db3:/data/db3
     command: "--port=29017 --replSet rs --dbpath /data/db3"
 volumes:
-  - db1
-  - db2
-  - db3
+  - db1:
+  - db2:
+  - db3:
 networks:
   my-network:
     driver: bridge
