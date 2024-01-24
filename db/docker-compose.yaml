@@ -13,7 +13,7 @@ services:
       - type: bind
         source: ./mongo/key
         target: /mongo/key
-    command: "--port=27017 --replSet rs"
+    command: "--port=27017 --replSet rs --keyFile /mongo/key/replica.key "
 
   rs102:
     image: percona/percona-server-mongodb:7.0
@@ -25,7 +25,11 @@ services:
       - my-network
     volumes:
       - db2:/data/db
-    command: "--port=28017 --replSet rs"
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
+    
+    command: "--port=28017 --replSet rs --keyFile /mongo/key/replica.key"
 
   rs103:
     image: percona/percona-server-mongodb:7.0
@@ -37,7 +41,10 @@ services:
       - my-network
     volumes:
       - db3:/data/db
-    command: "--port=29017 --replSet rs"
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
+    command: "--port=29017 --replSet rs --keyFile /mongo/key/replica.key"
 volumes:
   db1:
   db2:
