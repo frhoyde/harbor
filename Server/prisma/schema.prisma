@@ -58,7 +58,6 @@ model StorageUnit {
 model EndPoints {
   uuid         String    @id @default(auto()) @map("_id") @db.ObjectId
   url          String
+  facility     Facility? @relation(fields: [facilityName], references: [name])
   facilityName String
-  facility     Facility? @relation(fields: [facilityId], references: [uuid])
-  facilityId   String?   @db.ObjectId
 }

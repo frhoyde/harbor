@@ -1,14 +1,14 @@
 import htmlMinifier from "html-minifier";
 import scrapingbee from "scrapingbee";
-import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorplaceData } from "../../utils/extracting/storplace.js";
+import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.js";
 import jsdom from "jsdom";
 import { databaseClient } from "../../database/index.js";
 export const scrapeService = {
 	scrapeFullStorPlace: async () => {
 		try {
-			const urls =
+			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
 						facilityName: "storPlace",
@@ -16,9 +16,9 @@ export const scrapeService = {
 				});
 
 			const storageUnits = await Promise.all(
-				urls.map((url) => {
+				endPoints.map((endPoint) => {
 					return scrapeService.scrapeStorPlaceOnce(
-						url.url
+						endPoint.url
 					);
 				})
 			);
@@ -43,14 +43,144 @@ export const scrapeService = {
 		}
 	},
 
-	scrapeStorPlaceOnce: () => {
-		let extractedStorePlacedata;
+	scrapeFullIStorage: async () => {
+		try {
+			const endPoints =
+				await databaseClient.endPoints.findMany({
+					where: {
+						facilityName: "iStorage",
+					},
+				});
+
+			const storageUnits = await Promise.all(
+				endPoints.map((endPoint) => {
+					return scrapeService.scrapeIStorageOnce(
+						endPoint.url
+					);
+				})
+			);
+
+			const snapshots =
+				await databaseClient.snapshot.create({
+					data: {
+						storageUnits: {
+							create: storageUnits,
+						},
+						facility: {
+							connect: {
+								facilityName: "iStorage",
+							},
+						},
+					},
+				});
+
+			return snapshots;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	scrapeFullStorageRentals: async () => {
+		try {
+			const endPoints =
+				await databaseClient.endPoints.findMany({
+					where: {
+						facilityName: "storageRentals",
+					},
+				});
+
+			const storageUnits = await Promise.all(
+				endPoints.map((endPoint) => {
+					return scrapeService.scrapeStorageRentalsOnce(
+						endPoint.url
+					);
+				})
+			);
+
+			const snapshots =
+				await databaseClient.snapshot.create({
+					data: {
+						storageUnits: {
+							create: storageUnits,
+						},
+						facility: {
+							connect: {
+								facilityName: "storageRentals",
+							},
+						},
+					},
+				});
+
+			return snapshots;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	scrapeStorageRentalsOnce: (url) => {
+		let extractedStorageRentalsData;
+		try {
+			let data;
+			scrapeService
+				.getScrapedDOM(url)
+				.then(function (response) {
+					let decoder = new TextDecoder();
+					let text = decoder.decode(
+						response.data
+					);
+					data = scrapeService.minifyHTML(text);
+					extractedStorageRentalsData =
+						parseStorageRentalsData(data);
+				})
+				.catch((e) =>
+					console.log(
+						"A problem occurs : " + e.message
+					)
+				);
+
+			return extractedStorageRentalsData;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	scrapeIStorageOnce: async (req, res) => {
+		let extractedIStorageData;
 		try {
 			let data;
 			scrapeService
 				.getScrapedDOM(
-					"https://www.storplaceselfstorage.com/storage-units/kentucky/bowling-green/storplace-of-greenwood-347038/"
+					"https://www.istorage.com/storage/tennessee/storage-units-alcoa/142-Airport-Plaza-Blvd-821"
 				)
+				.then(function (response) {
+					let decoder = new TextDecoder();
+					let text = decoder.decode(
+						response.data
+					);
+					data = scrapeService.minifyHTML(text);
+					extractedIStorageData =
+						parseIStorageData(data);
+
+					return res.status(200).send(data);
+				})
+				.catch((e) =>
+					console.log(
+						"A problem occurs : " + e.message
+					)
+				);
+
+			return extractedIStorageData;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	scrapeStorPlaceOnce: (url) => {
+		let extractedStorePlacedata;
+		try {
+			let data;
+			scrapeService
+				.getScrapedDOM(url)
 				.then(function (response) {
 					let decoder = new TextDecoder();
 					let text = decoder.decode(
