@@ -1,78 +1,54 @@
-version: "3.8"
+version: "3"
 services:
-  harbor1:
+  rs101:
     image: percona/percona-server-mongodb:7.0
-    container_name: harbor1
-    hostname: harbor1
+    container_name: rs101
+    hostname: rs101
     ports:
       - "27017:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-0:/data/db
-    env_file:
-      ./mongod.env
     networks:
-      - harbor-network
+      - my-network
+    volumes:
+      - db1:/data/db
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
+    command: "--port=27017 --replSet rs --keyFile /mongo/key/replica.key "
+
+  rs102:
+    image: percona/percona-server-mongodb:7.0
+    container_name: rs102
+    hostname: rs102
+    ports:
+      - "28017:28017"    
+    networks:
+      - my-network
+    volumes:
+      - db2:/data/db
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
     
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
+    command: "--port=28017 --replSet rs --keyFile /mongo/key/replica.key"
 
-  harbor2:
+  rs103:
     image: percona/percona-server-mongodb:7.0
-    container_name: harbor2
-    hostname: harbor2
+    container_name: rs103
+    hostname: rs103
     ports:
-      - "27018:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-1:/data/db
-    env_file:
-      ./mongod.env
+      - "29017:29017"    
     networks:
-      - harbor-network
-  
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-
-  harbor3:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor3
-    hostname: harbor3
-    ports:
-      - "27019:27017"
+      - my-network
     volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key
-      - harbor-mongo-data-2:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network 
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-
-  harbor4:
-    image: percona/percona-server-mongodb:7.0
-    container_name: harbor4
-    hostname: harbor4
-    ports:
-      - "27020:27017"
-    volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key.devel
-      - harbor-mongo-data-3:/data/db
-    env_file:
-      ./mongod.env
-    networks:
-      - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-  
-
+      - db3:/data/db
+      - type: bind
+        source: ./mongo/key
+        target: /mongo/key
+    command: "--port=29017 --replSet rs --keyFile /mongo/key/replica.key"
 volumes:
-  harbor-mongo-data-0:
-  harbor-mongo-data-1:
-  harbor-mongo-data-2:
-  harbor-mongo-data-3:
-
+  db1:
+  db2:
+  db3:
 networks:
-  harbor-network:
+  my-network:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.10.5.0/24
