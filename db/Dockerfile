@@ -1,5 +1,5 @@
 # Use the official MongoDB image as the base image
-FROM percona/percona-server-mongodb:7.0
+FROM mongo:latest
 
 # Copy the generate-keyfile.sh script to the container
 COPY generate-keyfile.sh /generate-keyfile.sh
