@@ -8,7 +8,9 @@ services:
       - "27017:27017"
     networks:
       - my-network
-    command: "--port=27017 --replSet rs"
+    volumes:
+      -db1:/data/db1
+    command: "--port=27017 --replSet rs --dbPath /data/db1"
 
   rs102:
     image: percona/percona-server-mongodb:7.0
@@ -18,7 +20,9 @@ services:
       - "28017:28017"    
     networks:
       - my-network
-    command: "--port=28017 --replSet rs"
+    volumes:
+      -db2:/data/db2
+    command: "--port=28017 --replSet rs --dbPath /data/db2"
 
   rs103:
     image: percona/percona-server-mongodb:7.0
@@ -28,7 +32,9 @@ services:
       - "29017:29017"    
     networks:
       - my-network
-    command: "--port=29017 --replSet rs"
+    volumes:
+      -db3:/data/db3
+    command: "--port=29017 --replSet rs --dbPath /data/db3"
 
 networks:
   my-network:
