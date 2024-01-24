@@ -7,19 +7,13 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key.devel
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-0:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    entrypoint:
-      - bash
-      - -c
-      - |
-          cp /data/replica.key.devel /data/replica.key
-          chmod 400 /data/replica.key
-          chown 999:999 /data/replica.key    
+    
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
 
   harbor2:
@@ -29,19 +23,13 @@ services:
     ports:
       - "27018:27017"
     volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key.devel
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-1:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    entrypoint:
-      - bash
-      - -c
-      - |
-          cp /data/replica.key.devel /data/replica.key
-          chmod 400 /data/replica.key
-          chown 999:999 /data/replica.key 
+  
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
 
   harbor3:
@@ -51,19 +39,12 @@ services:
     ports:
       - "27019:27017"
     volumes:
-      - $PWD/mongo-conf/replica.key:/data/replica.key.devel
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-2:/data/db
     env_file:
       ./mongod.env
     networks:
-      - harbor-network
-    entrypoint:
-      - bash
-      - -c
-      - |
-          cp /data/replica.key.devel /data/replica.key
-          chmod 400 /data/replica.key
-          chown 999:999 /data/replica.key  
+      - harbor-network 
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
 
   harbor4:
@@ -79,13 +60,6 @@ services:
       ./mongod.env
     networks:
       - harbor-network
-    entrypoint:
-      - bash
-      - -c
-      - |
-          cp /data/replica.key.devel /data/replica.key
-          chmod 400 /data/replica.key
-          chown 999:999 /data/replica.key  
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
   
 
