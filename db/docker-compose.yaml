@@ -9,7 +9,7 @@ services:
     networks:
       - my-network
     volumes:
-      - db1:/data/db1
+      - ./data/db1:/data/db1
     command: "--port=27017 --replSet rs --dbPath /data/db1"
 
   rs102:
@@ -21,7 +21,7 @@ services:
     networks:
       - my-network
     volumes:
-      - db2:/data/db2
+      - ./data/db2:/data/db2
     command: "--port=28017 --replSet rs --dbPath /data/db2"
 
   rs103:
@@ -33,7 +33,7 @@ services:
     networks:
       - my-network
     volumes:
-      - db3:/data/db3
+      - ./data/db3:/data/db3
     command: "--port=29017 --replSet rs --dbPath /data/db3"
 
 networks:
