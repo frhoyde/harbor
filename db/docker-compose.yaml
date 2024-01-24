@@ -1,11 +1,6 @@
 version: "3.8"
 services:
-  harbor-mongo-keys:
-    image: depop/openssl-bats
-    volumes:
-      - harbor-mongo-keys:/mongo-conf
-    command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
-
+  
   harbor1:
     image: percona/percona-server-mongodb:7.0
     container_name: harbor1
@@ -13,13 +8,19 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - harbor-mongo-keys:/opt/keyfile
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-0:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    entrypoint:
+      - bash
+      - -c
+      - |
+          chmod 400 /data/replica.key
+          chown 999:999 /data/replica.key    
+    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor2:
@@ -29,13 +30,19 @@ services:
     ports:
       - "27018:27017"
     volumes:
-      - harbor-mongo-keys:/opt/keyfile
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-1:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    entrypoint:
+      - bash
+      - -c
+      - |
+          chmod 400 /data/replica.key
+          chown 999:999 /data/replica.key 
+    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor3:
@@ -45,13 +52,19 @@ services:
     ports:
       - "27019:27017"
     volumes:
-      - harbor-mongo-keys:/opt/keyfile
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-2:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    entrypoint:
+      - bash
+      - -c
+      - |
+          chmod 400 /data/replica.key
+          chown 999:999 /data/replica.key 
+    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   harbor4:
@@ -61,19 +74,24 @@ services:
     ports:
       - "27020:27017"
     volumes:
-      - harbor-mongo-keys:/opt/keyfile
+      - $PWD/mongo-conf/replica.key:/data/replica.key
       - harbor-mongo-data-3:/data/db
     env_file:
       ./mongod.env
     networks:
       - harbor-network
-    command: "mongod --bind_ip_all --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet hrs"
+    entrypoint:
+      - bash
+      - -c
+      - |
+          chmod 400 /data/replica.key
+          chown 999:999 /data/replica.key 
+    command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
     depends_on:
         - harbor-mongo-keys
   
 
 volumes:
-  harbor-mongo-keys:
   harbor-mongo-data-0:
   harbor-mongo-data-1:
   harbor-mongo-data-2:
