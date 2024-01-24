@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-  
   harbor1:
     image: percona/percona-server-mongodb:7.0
     container_name: harbor1
@@ -21,8 +20,7 @@ services:
           chmod 400 /data/replica.key
           chown 999:999 /data/replica.key    
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-    depends_on:
-        - harbor-mongo-keys
+
   harbor2:
     image: percona/percona-server-mongodb:7.0
     container_name: harbor2
@@ -43,8 +41,7 @@ services:
           chmod 400 /data/replica.key
           chown 999:999 /data/replica.key 
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-    depends_on:
-        - harbor-mongo-keys
+
   harbor3:
     image: percona/percona-server-mongodb:7.0
     container_name: harbor3
@@ -65,8 +62,7 @@ services:
           chmod 400 /data/replica.key
           chown 999:999 /data/replica.key 
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-    depends_on:
-        - harbor-mongo-keys
+
   harbor4:
     image: percona/percona-server-mongodb:7.0
     container_name: harbor4
@@ -87,8 +83,6 @@ services:
           chmod 400 /data/replica.key
           chown 999:999 /data/replica.key 
     command: "mongod --bind_ip_all --auth --keyFile /data/replica.key --replSet hrs"
-    depends_on:
-        - harbor-mongo-keys
   
 
 volumes:
