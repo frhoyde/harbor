@@ -1,22 +1,16 @@
+import jsdom from "jsdom";
 function parseStorageRentalsData(data) {
 	const competitor = {
 		name: "",
 		storage_units: [],
 	};
 
-	// Select the specific element to insert HTML
-	//const targetElement = document.querySelector('html');
-	const unitContainer = document.getElementById(
-		"unit-html-container"
-	);
-	unitContainer.insertAdjacentHTML(
-		"beforeend",
-		data
-	);
+	const { JSDOM } = jsdom;
+	const dom = new JSDOM(data);
 
 	const storageUnitElements =
-		unitContainer.querySelectorAll(
-			".unitItemContainer"
+		dom.window.document.querySelectorAll(
+			"span#storageUnitsItem-text-unitSize"
 		);
 
 	console.log(storageUnitElements.length);
@@ -57,24 +51,6 @@ function parseStorageRentalsData(data) {
 						.slice(0, -appliedSuffix.length)
 				: undefined;
 
-			// Create a table row with JSON and raw HTML for each unit
-			const tableRow = `
-      <tr>
-        <td>${index + 1}</td>
-        <td><pre contenteditable="true">${JSON.stringify(
-					{
-						size,
-						type,
-						price,
-						features,
-						special,
-					},
-					null,
-					2
-				)}</pre></td>
-        <td><pre>${escapeHtml(unitElement.outerHTML)}</pre></td>
-      </tr>`;
-
 			competitor.storage_units.push({
 				size,
 				type,
@@ -82,14 +58,6 @@ function parseStorageRentalsData(data) {
 				features,
 				special,
 			});
-
-			// Append the table row to the result table
-			document
-				.getElementById("resultTableBody")
-				.insertAdjacentHTML(
-					"beforeend",
-					tableRow
-				);
 		}
 	);
 

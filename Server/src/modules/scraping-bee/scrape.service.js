@@ -117,34 +117,32 @@ export const scrapeService = {
 		}
 	},
 
-	scrapeStorageRentalsOnce: (url) => {
+	scrapeStorageRentalsOnce: async (req, res) => {
 		let extractedStorageRentalsData;
 		try {
 			let data;
 			scrapeService
-				.getScrapedDOM(url)
+				.getScrapedDOM(
+					"https://www.sroa.com/storage-units/tennessee/old-hickory"
+				)
 				.then(function (response) {
 					let decoder = new TextDecoder();
 					let text = decoder.decode(
 						response.data
 					);
 					data = scrapeService.minifyHTML(text);
+					console.log(data);
 					extractedStorageRentalsData =
 						parseStorageRentalsData(data);
+					res.send(data);
 				})
-				.catch((e) =>
-					console.log(
-						"A problem occurs : " + e.message
-					)
-				);
-
-			return extractedStorageRentalsData;
+				.catch((e) => console.log(e));
 		} catch (error) {
 			console.log(error);
 		}
 	},
 
-	scrapeIStorageOnce: async (req, res) => {
+	scrapeIStorageOnce: (url) => {
 		let extractedIStorageData;
 		try {
 			let data;
@@ -160,10 +158,6 @@ export const scrapeService = {
 					data = scrapeService.minifyHTML(text);
 					extractedIStorageData =
 						parseIStorageData(data);
-
-					return res
-						.status(200)
-						.send(extractedIStorageData);
 				})
 				.catch((e) =>
 					console.log(

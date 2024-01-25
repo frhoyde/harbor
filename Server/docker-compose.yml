@@ -1,13 +1,18 @@
-version: "3.1"
-
+version: "3.9"
 services:
-  percona-mongodb:
-    image: percona/percona-server-mongodb:latest
-    container_name: percona-mongodb
+  harbor:
+    image: mongo:latest
+    ports:
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
-    ports:
-      - "27017:27017"
+      MONGO_INITDB_DATABASE: harbor
+    command: ["--replSet", "rs0"]
+
+  setup:
+    image: mongo:latest
+    depends_on:
+      - harbor
     volumes:
-      - ./data:/data/db
+      - ./setup-replica-set.js:/docker-entrypoint-initdb.d/setup-replica-set.js

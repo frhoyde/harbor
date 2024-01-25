@@ -8,6 +8,7 @@ import { httpLogger } from "./utils/log/http-logger.util.js";
 import { getRequestLogger } from "./utils/log/index.js";
 // Router imports
 import scrapeRouter from "./modules/scraping-bee/scrape.route.js";
+import storageRouter from "./modules/storage/storage.route.js";
 // Initialization
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(
 
 // Routes
 app.use("/scrape", scrapeRouter);
+app.use("/storage", storageRouter);
 app.get("/are-you-ok", (req, res) => {
 	return res
 		.status(200)

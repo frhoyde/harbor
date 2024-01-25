@@ -13,7 +13,6 @@ function parseIStorageData(data) {
 	};
 
 	const dom = new JSDOM(data);
-	console.log(dom.window.document.body);
 
 	const storageUnitElements =
 		dom.window.document.querySelectorAll(
