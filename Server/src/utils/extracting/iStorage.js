@@ -19,8 +19,6 @@ function parseIStorageData(data) {
 			".unit-select-item"
 		);
 
-	console.log(storageUnitElements.length);
-
 	storageUnitElements.forEach(
 		(unitElement, index) => {
 			const sizeString =
@@ -29,20 +27,14 @@ function parseIStorageData(data) {
 				).innerHTML;
 			const size = parseSize(sizeString);
 
-			console.log(size);
-
 			const type =
 				unitElement.querySelector(
 					".det"
 				).innerHTML;
 
-			console.log(type);
-
 			const price = unitElement
 				.querySelector(".part_item_price")
 				.innerHTML.match(/\$(\d+)/)[1];
-
-			console.log(price);
 
 			const featuresString = Array.from(
 				unitElement.getElementsByClassName(
@@ -59,7 +51,6 @@ function parseIStorageData(data) {
 					"li span"
 				)
 			).map((span) => span.textContent);
-			console.log(features);
 
 			const specialElement =
 				unitElement.querySelector(".part_badge");
@@ -78,7 +69,7 @@ function parseIStorageData(data) {
 		}
 	);
 
-	return competitor;
+	return competitor.storage_units;
 }
 
 function parseSize(sizeString) {

@@ -5,39 +5,52 @@ import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.js";
 import jsdom from "jsdom";
 import { databaseClient } from "../../database/index.js";
+import { urls } from "../../database/seeders/seedEndpoints.js";
 export const scrapeService = {
+	client: new scrapingbee.ScrapingBeeClient(
+		"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
+	),
+
 	scrapeFullStorPlace: async () => {
 		try {
-			const endPoints =
-				await databaseClient.endPoints.findMany({
-					where: {
-						facilityName: "storPlace",
-					},
-				});
+			// const endPoints =
+			// 	await databaseClient.endPoints.findMany({
+			// 		where: {
+			// 			facilityName: "storPlace",
+			// 		},
+			// 	});
 
-			const storageUnits = await Promise.all(
-				endPoints.map((endPoint) => {
-					return scrapeService.scrapeStorPlaceOnce(
+			const endPoints = urls.map((url) => {
+				return {
+					url: url,
+					facilityName: "storplace",
+				};
+			});
+			let storageUnits = [];
+			endPoints.map(async (endPoint) => {
+				let result =
+					await scrapeService.scrapeStorPlaceOnce(
 						endPoint.url
 					);
-				})
-			);
+				storageUnits.push(result);
+			});
 
-			const snapshots =
-				await databaseClient.snapshot.create({
-					data: {
-						storageUnits: {
-							create: storageUnits,
-						},
-						facility: {
-							connect: {
-								facilityName: "storPlace",
-							},
-						},
-					},
-				});
+			console.log(storageUnits);
+			// const snapshots =
+			// 	await databaseClient.snapshot.create({
+			// 		data: {
+			// 			storageUnits: {
+			// 				create: storageUnits,
+			// 			},
+			// 			facility: {
+			// 				connect: {
+			// 					facilityName: "storPlace",
+			// 				},
+			// 			},
+			// 		},
+			// 	});
 
-			return snapshots;
+			// return snapshots;
 		} catch (error) {
 			console.log(error);
 		}
@@ -147,9 +160,7 @@ export const scrapeService = {
 		try {
 			let data;
 			scrapeService
-				.getScrapedDOM(
-					"https://www.istorage.com/storage/tennessee/storage-units-alcoa/142-Airport-Plaza-Blvd-821"
-				)
+				.getScrapedDOM(url)
 				.then(function (response) {
 					let decoder = new TextDecoder();
 					let text = decoder.decode(
@@ -171,11 +182,11 @@ export const scrapeService = {
 		}
 	},
 
-	scrapeStorPlaceOnce: (url) => {
+	scrapeStorPlaceOnce: async (url) => {
 		let extractedStorePlacedata;
 		try {
 			let data;
-			scrapeService
+			await scrapeService
 				.getScrapedDOM(url)
 				.then(function (response) {
 					let decoder = new TextDecoder();
@@ -199,14 +210,12 @@ export const scrapeService = {
 	},
 
 	getScrapedDOM: async (url) => {
-		var client =
-			new scrapingbee.ScrapingBeeClient(
-				"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
-			);
-		var response = await client.get({
-			url: url,
-			params: {},
-		});
+		var response = await scrapeService.client.get(
+			{
+				url: url,
+				params: {},
+			}
+		);
 
 		return response;
 	},

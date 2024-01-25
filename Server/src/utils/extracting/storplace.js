@@ -19,7 +19,6 @@ function parseStorplaceData(data) {
 		dom.window.document.querySelectorAll(
 			".card-body"
 		);
-	console.log(storageUnitElements.length);
 
 	storageUnitElements.forEach((unitElement) => {
 		try {
