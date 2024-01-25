@@ -4,6 +4,7 @@ import { seedDataBase } from "./database/seeders/index.js";
 import cron from "node-cron";
 import { logger } from "./utils/log/logger.util.js";
 import { scrapeService } from "./modules/scraping-bee/scrape.service.js";
+import { env } from "./config.js";
 app.listen(app.get("port"), async () => {
 	logger.info(
 		"Server running on http://localhost:" +
@@ -32,7 +33,7 @@ app.listen(app.get("port"), async () => {
 	}
 
 	try {
-		cron.schedule("*/30 * * * * *", async () => {
+		cron.schedule(env.cronJobTime, async () => {
 			// Run all scrapers and store data in the database
 			await scrapeService.scrapeFullStorPlace();
 			await scrapeService.scrapeFullIStorage();
