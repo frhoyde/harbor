@@ -19,7 +19,7 @@ storageRouter.get(
 	storageController.getStorageFacility
 );
 
-storageRouter.put(
+storageRouter.patch(
 	"/facility/:id",
 	storageController.updateStorageFacility
 );
@@ -64,7 +64,7 @@ storageRouter.post(
 	storageController.createOneStorageUnit
 );
 
-storageRouter.put(
+storageRouter.patch(
 	"/storage-units/:id",
 	storageController.updateOneStorageUnit
 );
