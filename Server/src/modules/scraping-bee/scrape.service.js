@@ -95,13 +95,17 @@ export const scrapeService = {
 			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
-						facilityName: "StorPlace",
+						facilityName: "storplace",
 					},
 				});
+			if (!endPoints.length) {
+				throw new Error("No endpoints were found");
 
+			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
 			);
+
 
 			const storageUnits = await Promise.all(
 				endPoints.map(async (endPoint) => {
@@ -143,10 +147,13 @@ export const scrapeService = {
 			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
-						facilityName: "IStorage",
+						facilityName: "istorage",
 					},
 				});
+			if (!endPoints.length) {
+				throw new Error("No endpoints were found");
 
+			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
 			);

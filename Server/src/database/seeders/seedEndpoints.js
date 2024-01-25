@@ -10,7 +10,7 @@ export const seedEndpoints = async () => {
 		console.log(error);
 	}
 
-	if (existingEndpoints) {
+	if (existingEndpoints.length) {
 		return;
 	}
 

@@ -39,5 +39,3 @@ rs.initiate(config, { force: true });
 rs.status();
 EOF
 
-echo $CMD | mongosh --host mongo1
-echo "replica set created"
