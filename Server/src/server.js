@@ -41,8 +41,7 @@ app.listen(app.get("port"), async () => {
 		});
 	} catch (error) {
 		logger.error(
-			"Database could not be seeded.",
-			error
+			`Error running cron job: ${error}`
 		);
 	}
 	logger.info(
