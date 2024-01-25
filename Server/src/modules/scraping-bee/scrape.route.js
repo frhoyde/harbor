@@ -14,9 +14,4 @@ scrapeRouter.get(
 	scrapeController.scrapeIStorage
 );
 
-// scrapeRouter.get(
-// 	"/storagerentals",
-// 	scrapeService.scrapeStorageRentalsOnce
-// );
-
 export default scrapeRouter;

@@ -34,7 +34,7 @@ app.listen(app.get("port"), async () => {
 	try {
 		cron.schedule("*/30 * * * * *", async () => {
 			// Run all scrapers and store data in the database
-			// await scrapeService.scrapeFullStorPlace();
+			await scrapeService.scrapeFullStorPlace();
 			await scrapeService.scrapeFullIStorage();
 			// await scrapeService.scrapeFullStorageRentals();
 		});

@@ -4,8 +4,6 @@ import morganBody from "morgan-body";
 import minifyHTML from "express-minify-html";
 
 import { env } from "./config.js";
-import { httpLogger } from "./utils/log/http-logger.util.js";
-import { getRequestLogger } from "./utils/log/index.js";
 // Router imports
 import scrapeRouter from "./modules/scraping-bee/scrape.route.js";
 import storageRouter from "./modules/storage/storage.route.js";
