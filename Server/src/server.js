@@ -23,7 +23,7 @@ app.listen(app.get("port"), async () => {
 	}
 
 	try {
-		// await seedDataBase();
+		await seedDataBase();
 	} catch (error) {
 		logger.error(
 			"Database could not be seeded.",
@@ -32,13 +32,11 @@ app.listen(app.get("port"), async () => {
 	}
 
 	try {
-		cron.schedule("*/30 * * * * *", () => {
-			// const IStorage_units =
-			// scrapeService.scrapeFullIStorage();
-			const Storplace_units =
-				scrapeService.scrapeFullStorPlace();
-
-			console.log(Storplace_units);
+		cron.schedule("*/30 * * * * *", async () => {
+			// Run all scrapers and store data in the database
+			// await scrapeService.scrapeFullStorPlace();
+			await scrapeService.scrapeFullIStorage();
+			// await scrapeService.scrapeFullStorageRentals();
 		});
 	} catch (error) {
 		logger.error(

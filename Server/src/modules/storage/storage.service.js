@@ -63,33 +63,26 @@ export const storageService = {
 		}
 	},
 
-	createOneEndPoint: async (req, res) => {
-		const { data } = req.body;
+	createEndPoint: async (data) => {
 		try {
 			await databaseClient.endPoints.create({
 				data: {
 					...data,
 				},
 			});
-			res.status(200).json({
-				message: "EndPoint created successfully",
-			});
 		} catch (error) {
-			res
-				.status(404)
-				.json({ message: error.message });
+			throw new Error(error);
 		}
 	},
 
-	getAllEndPoints: async (req, res) => {
+	getEndPoints: async () => {
 		try {
 			const endPoints =
 				await databaseClient.endPoints.findMany();
-			res.status(200).json(endPoints);
+
+			return endPoints;
 		} catch (error) {
-			res
-				.status(404)
-				.json({ message: error.message });
+			throw new Error(error);
 		}
 	},
 

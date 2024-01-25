@@ -5,11 +5,115 @@ import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.js";
 import jsdom from "jsdom";
 import { databaseClient } from "../../database/index.js";
-import { urls } from "../../database/seeders/seedEndpoints.js";
+import { storplaceUrls } from "../../database/seeders/seedEndpoints.js";
+import { logger } from "../../utils/log/logger.util.js";
+
+const client = new scrapingbee.ScrapingBeeClient(
+	"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
+);
 export const scrapeService = {
-	client: new scrapingbee.ScrapingBeeClient(
-		"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
-	),
+	getScrapedDOM: async (url, selector) => {
+		try {
+			const response = await client.get({
+				url,
+				params: {
+					block_resources: "True",
+					wait_browser: "load",
+					wait_for: selector,
+				},
+			});
+			return response.data;
+		} catch (error) {
+			logger.error(
+				`Error fetching data from ${url}: ${error.message}`
+			);
+			throw error;
+		}
+	},
+
+	minifyHTML: (scrapedHtml) => {
+		try {
+			const minifiedHtml = htmlMinifier.minify(
+				scrapedHtml,
+				{
+					collapseWhitespace: true,
+					collapseBooleanAttributes: true,
+					collapseInlineTagWhitespace: true,
+					decodeEntities: true,
+					html5: true,
+					processConditionalComments: true,
+					processScripts: ["text/html"],
+					removeAttributeQuotes: true,
+					removeEmptyAttributes: true,
+					removeOptionalTags: true,
+					removeRedundantAttributes: true,
+					removeStyleLinkTypeAttributes: true,
+					removeTagWhitespace: true,
+					useShortDoctype: true,
+					sortAttributes: true,
+					sortClassName: true,
+					trimCustomFragments: true,
+					removeComments: true,
+					minifyCSS: true,
+					minifyJS: true,
+				}
+			);
+
+			return minifiedHtml;
+		} catch (error) {
+			console.error(
+				"Error minifying HTML:",
+				error.message
+			);
+			throw error;
+		}
+	},
+
+	scrapeAndStore: async (
+		facilityName,
+		scrapeFunction
+	) => {
+		try {
+			const endpoints = urls.filter(
+				(url) => url.facilityName === facilityName
+			);
+
+			const storageUnits = await Promise.all(
+				endpoints.map(async (endpoint) => {
+					try {
+						const scrapedData =
+							await scrapeFunction(endpoint.url);
+						return scrapedData;
+					} catch (error) {
+						console.error(
+							`Error scraping ${facilityName}: ${error.message}`
+						);
+						return null;
+					}
+				})
+			);
+
+			const snapshots =
+				await databaseClient.snapshot.create({
+					data: {
+						storageUnits: {
+							create:
+								storageUnits.filter(Boolean),
+						}, // filter out null values
+						facility: {
+							connect: { facilityName },
+						},
+					},
+				});
+
+			return snapshots;
+		} catch (error) {
+			console.error(
+				`Error processing ${facilityName}: ${error.message}`
+			);
+			throw error;
+		}
+	},
 
 	scrapeFullStorPlace: async () => {
 		try {
@@ -61,13 +165,16 @@ export const scrapeService = {
 			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
-						facilityName: "iStorage",
+						facilityName: "IStorage",
 					},
 				});
 
+			logger.info(
+				`Scraping ${endPoints.length} endpoints`
+			);
 			const storageUnits = await Promise.all(
-				endPoints.map((endPoint) => {
-					return scrapeService.scrapeIStorageOnce(
+				endPoints.map(async (endPoint) => {
+					return await scrapeService.scrapeIStorageOnce(
 						endPoint.url
 					);
 				})
@@ -77,11 +184,17 @@ export const scrapeService = {
 				await databaseClient.snapshot.create({
 					data: {
 						storageUnits: {
-							create: storageUnits,
+							create: storageUnits[0].map(
+								(unit) => {
+									return {
+										...unit,
+									};
+								}
+							),
 						},
 						facility: {
 							connect: {
-								facilityName: "iStorage",
+								name: "IStorage",
 							},
 						},
 					},
@@ -155,30 +268,26 @@ export const scrapeService = {
 		}
 	},
 
-	scrapeIStorageOnce: (url) => {
+	scrapeIStorageOnce: async (url) => {
 		let extractedIStorageData;
 		try {
 			let data;
-			scrapeService
-				.getScrapedDOM(url)
-				.then(function (response) {
-					let decoder = new TextDecoder();
-					let text = decoder.decode(
-						response.data
-					);
-					data = scrapeService.minifyHTML(text);
-					extractedIStorageData =
-						parseIStorageData(data);
-				})
-				.catch((e) =>
-					console.log(
-						"A problem occurs : " + e.message
-					)
+			logger.info(`Scraping ${url}`);
+			const scraped =
+				await scrapeService.getScrapedDOM(
+					url,
+					".unit-select-item"
 				);
+
+			let decoder = new TextDecoder();
+			let text = decoder.decode(scraped);
+			data = scrapeService.minifyHTML(text);
+			extractedIStorageData =
+				parseIStorageData(data);
 
 			return extractedIStorageData;
 		} catch (error) {
-			console.log(error);
+			logger.error(error);
 		}
 	},
 
@@ -186,8 +295,10 @@ export const scrapeService = {
 		let extractedStorePlacedata;
 		try {
 			let data;
-			await scrapeService
-				.getScrapedDOM(url)
+			scrapeService
+				.getScrapedDOM(
+					"https://www.storplaceselfstorage.com/storage-units/kentucky/bowling-green/storplace-of-greenwood-347038/"
+				)
 				.then(function (response) {
 					let decoder = new TextDecoder();
 					let text = decoder.decode(
@@ -207,47 +318,6 @@ export const scrapeService = {
 		} catch (error) {
 			console.log(error);
 		}
-	},
-
-	getScrapedDOM: async (url) => {
-		var response = await scrapeService.client.get(
-			{
-				url: url,
-				params: {},
-			}
-		);
-
-		return response;
-	},
-
-	minifyHTML: (scrapedHtml) => {
-		const minifiedHtml = htmlMinifier.minify(
-			scrapedHtml,
-			{
-				collapseWhitespace: true,
-				collapseBooleanAttributes: true,
-				collapseInlineTagWhitespace: true,
-				decodeEntities: true,
-				html5: true,
-				processConditionalComments: true,
-				processScripts: ["text/html"],
-				removeAttributeQuotes: true,
-				removeEmptyAttributes: true,
-				removeOptionalTags: true,
-				removeRedundantAttributes: true,
-				removeStyleLinkTypeAttributes: true,
-				removeTagWhitespace: true,
-				useShortDoctype: true,
-				sortAttributes: true,
-				sortClassName: true,
-				trimCustomFragments: true,
-				removeComments: true,
-				minifyCSS: true,
-				minifyJS: true,
-			}
-		);
-
-		return minifiedHtml;
 	},
 
 	extractStorePlace: (minifiedHtml) => {

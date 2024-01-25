@@ -76,13 +76,11 @@ export const storageController = {
 	},
 
 	createOneEndPoint: async (req, res) => {
+		const { data } = req.body;
 		try {
-			const storage =
-				await storageService.createOneEndPoint(
-					req.body.data
-				);
+			await storageService.createEndPoint(data);
 			res.status(201).json({
-				message: "Storage created successfully",
+				message: "EndPoint created successfully",
 			});
 		} catch (error) {
 			res
@@ -94,7 +92,7 @@ export const storageController = {
 	getAllEndPoints: async (req, res) => {
 		try {
 			const storage =
-				await storageService.getAllEndPoints();
+				await storageService.getEndPoints();
 			res.status(200).json(storage);
 		} catch (error) {
 			res
