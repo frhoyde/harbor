@@ -7,6 +7,7 @@ import { env } from "./config.js";
 // Router imports
 import scrapeRouter from "./modules/scraping-bee/scrape.route.js";
 import storageRouter from "./modules/storage/storage.route.js";
+import snapshotRouter from "./modules/snapshot/snapshot.route.js";
 import { config } from "dotenv";
 config();
 // Initialization
@@ -44,6 +45,7 @@ app.use(
 // Routes
 app.use("/scrape", scrapeRouter);
 app.use("/storage", storageRouter);
+app.use("/snapshot", snapshotRouter);
 app.get("/are-you-ok", (req, res) => {
 	return res
 		.status(200)
