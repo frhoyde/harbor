@@ -9,4 +9,19 @@ snapshotRouter.get(
 	snapshotController.getRecentSnapshots
 );
 
+snapshotRouter.get(
+	"/all/get",
+	snapshotController.getAllSnapshots
+);
+
+snapshotRouter.delete(
+	"/delete/:id",
+	snapshotController.deleteSnapshot
+);
+
+snapshotRouter.delete(
+	"/delete/bulk",
+	snapshotController.deleteBulkSnapshots
+);
+
 export default snapshotRouter;

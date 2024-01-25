@@ -186,44 +186,44 @@ export const scrapeService = {
 		}
 	},
 
-	scrapeFullStorageRentals: async () => {
-		try {
-			const endPoints =
-				await databaseClient.endPoints.findMany({
-					where: {
-						facilityName: "storageRentals",
-					},
-				});
+	// scrapeFullStorageRentals: async () => {
+	// 	try {
+	// 		const endPoints =
+	// 			await databaseClient.endPoints.findMany({
+	// 				where: {
+	// 					facilityName: "storageRentals",
+	// 				},
+	// 			});
 
-			const storageUnits = await Promise.all(
-				endPoints.map((endPoint) => {
-					return scrapeService.scrapeStorageRentalsOnce(
-						endPoint.url
-					);
-				})
-			);
+	// 		const storageUnits = await Promise.all(
+	// 			endPoints.map((endPoint) => {
+	// 				return scrapeService.scrapeStorageRentalsOnce(
+	// 					endPoint.url
+	// 				);
+	// 			})
+	// 		);
 
-			const snapshots =
-				await databaseClient.snapshot.create({
-					data: {
-						storageUnits: {
-							create: storageUnits,
-						},
-						facility: {
-							connect: {
-								facilityName: "storageRentals",
-							},
-						},
-					},
-				});
+	// 		const snapshots =
+	// 			await databaseClient.snapshot.create({
+	// 				data: {
+	// 					storageUnits: {
+	// 						create: storageUnits,
+	// 					},
+	// 					facility: {
+	// 						connect: {
+	// 							facilityName: "storageRentals",
+	// 						},
+	// 					},
+	// 				},
+	// 			});
 
-			return snapshots;
-		} catch (error) {
-			logger.error(
-				`Error scraping StorageRentals: ${error}`
-			);
-		}
-	},
+	// 		return snapshots;
+	// 	} catch (error) {
+	// 		logger.error(
+	// 			`Error scraping StorageRentals: ${error}`
+	// 		);
+	// 	}
+	// },
 
 	// scrapeStorageRentalsOnce: async (req, res) => {
 	// 	let extractedStorageRentalsData;

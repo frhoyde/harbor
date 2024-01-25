@@ -34,4 +34,54 @@ export const snapshotService = {
 
 		return snapshots;
 	},
+
+	getAllSnapshotsByFacilityName: async (
+		facilityName
+	) => {
+		let snapshots;
+		if (!facilityName) {
+			snapshots =
+				await databaseClient.snapshot.findMany({
+					orderBy: {
+						snapshotAt: "desc",
+					},
+				});
+		} else {
+			snapshots =
+				await databaseClient.snapshot.findMany({
+					where: {
+						facilityName: facilityName,
+					},
+					orderBy: {
+						snapshotAt: "desc",
+					},
+				});
+		}
+
+		return snapshots;
+	},
+
+	deleteSnapshotById: async (id) => {
+		const snapshot =
+			await databaseClient.snapshot.delete({
+				where: {
+					id: id,
+				},
+			});
+
+		return snapshot;
+	},
+
+	deleteBulkSnapshotsByIds: async (ids) => {
+		const snapshots =
+			await databaseClient.snapshot.deleteMany({
+				where: {
+					id: {
+						in: ids,
+					},
+				},
+			});
+
+		return snapshots;
+	},
 };
