@@ -9,6 +9,8 @@ import { getRequestLogger } from "./utils/log/index.js";
 // Router imports
 import scrapeRouter from "./modules/scraping-bee/scrape.route.js";
 import storageRouter from "./modules/storage/storage.route.js";
+import { config } from "dotenv";
+config();
 // Initialization
 const app = express();
 

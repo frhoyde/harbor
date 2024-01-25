@@ -5,11 +5,10 @@ import { parseIStorageData } from "../../utils/extracting/iStorage.js";
 import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.js";
 import jsdom from "jsdom";
 import { databaseClient } from "../../database/index.js";
-import { storplaceUrls } from "../../database/seeders/seedEndpoints.js";
 import { logger } from "../../utils/log/logger.util.js";
 
 const client = new scrapingbee.ScrapingBeeClient(
-	"AR18KX39ONCZ0PNYSKXOZ7KSYZDNRSHA7NN85R3U4D44ZMW54I83T6Y3S6IF5UQTRP8J616DS3M8R7DL"
+	process.env.SCRAPING_BEE_API_KEY
 );
 export const scrapeService = {
 	getScrapedDOM: async (url, selector) => {
