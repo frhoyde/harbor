@@ -95,7 +95,7 @@ export const scrapeService = {
 			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
-						facilityName: "storplace",
+						facilityName: "StorPlace",
 					},
 				});
 			if (!endPoints.length) {
@@ -147,7 +147,7 @@ export const scrapeService = {
 			const endPoints =
 				await databaseClient.endPoints.findMany({
 					where: {
-						facilityName: "istorage",
+						facilityName: "IStorage",
 					},
 				});
 			if (!endPoints.length) {

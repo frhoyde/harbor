@@ -18,7 +18,7 @@ export const seedEndpoints = async () => {
 		(url) => {
 			return {
 				url: url,
-				facilityName: "storplace",
+				facilityName: "StorPlace",
 			};
 		}
 	);
@@ -27,7 +27,7 @@ export const seedEndpoints = async () => {
 		(url) => {
 			return {
 				url: url,
-				facilityName: "istorage",
+				facilityName: "IStorage",
 			};
 		}
 	);
