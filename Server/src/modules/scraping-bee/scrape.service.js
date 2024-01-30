@@ -98,10 +98,14 @@ export const scrapeService = {
 						facilityName: "StorPlace",
 					},
 				});
+			if (!endPoints.length) {
+				throw new Error("No endpoints were found");
 
+			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
 			);
+
 
 			const storageUnits = await Promise.all(
 				endPoints.map(async (endPoint) => {
@@ -146,7 +150,10 @@ export const scrapeService = {
 						facilityName: "IStorage",
 					},
 				});
+			if (!endPoints.length) {
+				throw new Error("No endpoints were found");
 
+			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
 			);
