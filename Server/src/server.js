@@ -35,9 +35,13 @@ app.listen(app.get("port"), async () => {
 	try {
 		cron.schedule(env.cronJobTime, async () => {
 			// Run all scrapers and store data in the database
-			await scrapeService.scrapeFullStorPlace();
-			await scrapeService.scrapeFullIStorage();
-			// await scrapeService.scrapeFullStorageRentals();
+			// await scrapeService.scrapeFullStorPlace();
+			// await scrapeService.scrapeFullIStorage();
+			await scrapeService.scrapeStorageRentalsOnce();
+			logger.info(`Cron job ran at ${new Date()}
+			`);
+
+			// Delete Old Snapshots?
 		});
 	} catch (error) {
 		logger.error(

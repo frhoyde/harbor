@@ -1,4 +1,5 @@
 import jsdom from "jsdom";
+import { logger } from "../log/logger.util.js";
 function parseStorageRentalsData(data) {
 	const competitor = {
 		name: "",
@@ -10,7 +11,7 @@ function parseStorageRentalsData(data) {
 
 	const storageUnitElements =
 		dom.window.document.querySelectorAll(
-			"span#storageUnitsItem-text-unitSize"
+			".ant-list-items > div.hidden"
 		);
 
 	console.log(storageUnitElements.length);

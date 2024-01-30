@@ -225,31 +225,29 @@ export const scrapeService = {
 	// 	}
 	// },
 
-	// scrapeStorageRentalsOnce: async (req, res) => {
-	// 	let extractedStorageRentalsData;
-	// 	try {
-	// 		let data;
-	// 			.getScrapedDOM(
-	// 				"https://www.sroa.com/storage-units/tennessee/old-hickory"
-	// 			)
-	// 			.then(function (response) {
-	// 				let decoder = new TextDecoder();
-	// 				let text = decoder.decode(
-	// 					response.data
-	// 				);
-	// 				data = scrapeService.minifyHTML(text);
-	// 				console.log(data);
-	// 				extractedStorageRentalsData =
-	// 					parseStorageRentalsData(data);
-	// 				res.send(data);
-	// 			})
-	// 			.catch((e) => console.log(e));
-	// 	} catch (error) {
-	// 		logger.error(
-	// 			`Error scraping StorageRentals: ${error}`
-	// 		);
-	// 	}
-	// },
+	scrapeStorageRentalsOnce: async (url) => {
+		let extractedStorageRentalsData;
+		try {
+			let data;
+			logger.info(
+				`Scraping ${"https://www.sroa.com/storage-units/tennessee/goodlettsville-main-street"}`
+			);
+
+			const scraped = await getScrapedDOM(
+				"https://www.sroa.com/storage-units/tennessee/goodlettsville-main-street",
+				"div#storageUnits-units"
+			);
+			let decoder = new TextDecoder();
+			let text = decoder.decode(scraped);
+			data = scrapeService.minifyHTML(text);
+			extractedStorageRentalsData =
+				parseStorageRentalsData(data);
+		} catch (error) {
+			logger.error(
+				`Error scraping StorageRentals: ${error}`
+			);
+		}
+	},
 
 	scrapeIStorageOnce: async (url) => {
 		let extractedIStorageData;
