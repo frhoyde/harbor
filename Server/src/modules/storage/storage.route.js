@@ -1,11 +1,13 @@
 import { Router } from "express";
 
 import { storageController } from "./storage.controller.js";
+import { validate } from "../../middlewares/validate.middleware.js";
 
 const storageRouter = Router();
 
 storageRouter.post(
 	"/facility/create",
+	validate(createStorageFacilitySchema),
 	storageController.createStorageFacility
 );
 
@@ -21,6 +23,7 @@ storageRouter.get(
 
 storageRouter.patch(
 	"/facility/:id",
+	validate(updateStorageFacilitySchema),
 	storageController.updateStorageFacility
 );
 
@@ -31,6 +34,7 @@ storageRouter.delete(
 
 storageRouter.post(
 	"/endpoint/create",
+	validate(createOneEndPointSchema),
 	storageController.createOneEndPoint
 );
 
@@ -61,6 +65,7 @@ storageRouter.get(
 
 storageRouter.post(
 	"/storage-units/create",
+	validate(createOneStorageUnitSchema),
 	storageController.createOneStorageUnit
 );
 

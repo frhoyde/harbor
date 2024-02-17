@@ -12,10 +12,11 @@ datasource db {
 
 model User {
   uuid             String           @id @default(auto()) @map("_id") @db.ObjectId
+  username         String
   email            String           @unique
   password         String
-  Organization     Organization?    @relation(fields: [organizationUuid], references: [uuid])
-  organizationUuid String?          @db.ObjectId
+  Organization     Organization     @relation(fields: [organizationUuid], references: [uuid])
+  organizationUuid String           @db.ObjectId
   userOfFacility   UserOfFacility[]
 }
 
@@ -45,11 +46,11 @@ model Facility {
   address          String
   websiteUrl       String
   contact          Contact
-  operatingHours   OperatingHours
+  // operatingHours   OperatingHours
   snapshots        Snapshot[]
   endPoints        EndPoints[]
-  Organization     Organization?    @relation(fields: [organizationUuid], references: [uuid])
-  organizationUuid String?          @db.ObjectId
+  Organization     Organization     @relation(fields: [organizationUuid], references: [uuid])
+  organizationUuid String           @db.ObjectId
   userOfFacility   UserOfFacility[]
 }
 
@@ -93,8 +94,8 @@ model StorageUnit {
 }
 
 model EndPoints {
-  uuid         String    @id @default(auto()) @map("_id") @db.ObjectId
+  uuid         String   @id @default(auto()) @map("_id") @db.ObjectId
   url          String
-  facility     Facility? @relation(fields: [facilityName], references: [name])
+  facility     Facility @relation(fields: [facilityName], references: [name])
   facilityName String
 }
