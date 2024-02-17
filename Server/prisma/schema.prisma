@@ -10,15 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  uuid             String           @id @default(auto()) @map("_id") @db.ObjectId
+  email            String           @unique
+  password         String
+  Organization     Organization?    @relation(fields: [organizationUuid], references: [uuid])
+  organizationUuid String?          @db.ObjectId
+  userOfFacility   UserOfFacility[]
+}
+
+model Organization {
+  uuid       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String     @unique
+  address    String
+  website    String
+  facilities Facility[]
+  users      User[]
+}
+
+model UserOfFacility {
+  uuid         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user         User     @relation(fields: [userId], references: [uuid])
+  userId       String   @db.ObjectId
+  facility     Facility @relation(fields: [facilityName], references: [name])
+  facilityName String
+  role         String
+
+  @@unique([userId, facilityName])
+}
+
 model Facility {
-  uuid           String         @id @default(auto()) @map("_id") @db.ObjectId
-  name           String         @unique
-  address        String
-  websiteUrl     String
-  contact        Contact
-  operatingHours OperatingHours
-  snapshots      Snapshot[]
-  endPoints      EndPoints[]
+  uuid             String           @id @default(auto()) @map("_id") @db.ObjectId
+  name             String           @unique
+  address          String
+  websiteUrl       String
+  contact          Contact
+  operatingHours   OperatingHours
+  snapshots        Snapshot[]
+  endPoints        EndPoints[]
+  Organization     Organization?    @relation(fields: [organizationUuid], references: [uuid])
+  organizationUuid String?          @db.ObjectId
+  userOfFacility   UserOfFacility[]
 }
 
 type Contact {

@@ -11,7 +11,7 @@ function parseStorageRentalsData(data) {
 
 	const storageUnitElements =
 		dom.window.document.querySelectorAll(
-			".ant-list-items > div.hidden"
+			".ant-list-items > div"
 		);
 
 	console.log(storageUnitElements.length);
@@ -20,7 +20,7 @@ function parseStorageRentalsData(data) {
 		(unitElement, index) => {
 			const sizeString =
 				unitElement.querySelector(
-					".unitSize"
+					"span#storageUnitsItem-text-unitSize"
 				).innerHTML;
 			const size = parseSize(sizeString);
 
@@ -67,6 +67,7 @@ function parseStorageRentalsData(data) {
 
 function parseSize(sizeString) {
 	// Use a regular expression to extract width and depth values
+	console.log(sizeString);
 	const match = sizeString.match(
 		/\s*(\d+)\s*'\s*x\s*(\d+)\s*'/
 	);
