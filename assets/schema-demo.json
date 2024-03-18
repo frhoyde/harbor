@@ -1,0 +1,41 @@
+{
+  "uuid": "unique-identifier-for-document",
+  "name": "Example Storage",
+  "address": "123 Storage St, Cityville, USA",
+  "website_url": "http://www.examplestorage.com",
+  "contact": {
+    "phone": "(555) 123-4567",
+    "email": "info@examplestorage.com"
+  },
+  "operating_hours": {
+    "Monday": "9:00 AM - 6:00 PM",
+    "Tuesday": "9:00 AM - 6:00 PM",
+    "Wednesday": "9:00 AM - 6:00 PM",
+    "Thursday": "9:00 AM - 6:00 PM",
+    "Friday": "9:00 AM - 6:00 PM",
+    "Saturday": "10:00 AM - 4:00 PM",
+    "Sunday": "Closed"
+  },
+  "snapshots": [
+    {
+      "snapshot_uuid": "unique-identifier-for-snapshot",
+      "snapshot_at": "2023-11-24T12:00:00Z",
+      "storage_units": [
+        {
+          "size": "5 x 10",
+          "type": "Small Storage",
+          "price": 41.0,
+          "features": ["Interior Heated and Cooled", "Upper Floor", "Elevator"],
+          "special": "First month free for new customers."
+        },
+        {
+          "size": "10 x 10",
+          "type": "Medium Storage",
+          "price": 101.0,
+          "features": ["Interior Heated and Cooled", "Upper Floor", "Elevator"],
+          "special": "10% off your first month's rent."
+        }
+      ]
+    }
+  ]
+}
