@@ -1,14 +1,38 @@
 import { databaseClient } from "../../database/index.js";
+import argon2 from "argon2";
+
 export const userService = {
-	createUser: async (data) => {
+	register: async (user) => {
 		try {
+			const hashedPassword = await argon2.hash(
+				user.password
+			);
+
 			await databaseClient.user.create({
 				data: {
-					...data,
+					...user,
+					password: hashedPassword,
 				},
 			});
 		} catch (error) {
 			throw new Error(error);
+		}
+	},
+
+	getUserByEmail: async (email) => {
+		try {
+			const user =
+				await databaseClient.user.findUnique({
+					where: {
+						email,
+					},
+				});
+
+			return user;
+		} catch (error) {
+			res.status(500).json({
+				message: "Internal server error",
+			});
 		}
 	},
 

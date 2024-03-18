@@ -10,6 +10,11 @@ userRouter.post(
 	userController.registerUser
 );
 
+userRouter.get(
+	"/login",
+	userController.loginUser
+);
+
 userRouter.patch(
 	"/user/:id",
 	validate(userSchema.updateUserSchema),
