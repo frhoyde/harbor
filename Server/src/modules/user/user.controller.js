@@ -1,3 +1,6 @@
+import argon2 from "argon2";
+import jwt from "jsonwebtoken";
+
 export const userController = {
 	registerUser: async (req, res) => {
 		try {
