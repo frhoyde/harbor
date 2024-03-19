@@ -1,5 +1,4 @@
 import ApprovalsTable from "@/components/pages/approvals/ApprovalsTable";
-import React from "react";
 
 const approvals = [
   {

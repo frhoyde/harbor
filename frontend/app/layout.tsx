@@ -14,8 +14,9 @@ import NavLink from "@/components/shared/NavLink";
 import TopNav from "@/components/shared/TopNav";
 import Auth from "@/components/shared/Auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+
 import Provider from "@/lib/provider";
+import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 
 const inter = Inter({ subsets: ["latin"] });
 
