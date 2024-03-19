@@ -6,6 +6,20 @@ import { parseStorageRentalsData } from "../../utils/extracting/storageRentals.j
 import { databaseClient } from "../../database/index.js";
 import { logger } from "../../utils/log/logger.util.js";
 import { getScrapedDOM } from "../../utils/scraping/get-scraped-dom.util.js";
+import { z } from "zod";
+
+const storageUnitsSchema = z.array(
+	object({
+		size: z.object({
+			width: z.number(),
+			height: z.number(),
+		}),
+		price: z.number(),
+		type: z.string(),
+		features: z.array(z.string()),
+		special: z.string(),
+	})
+);
 
 export const scrapeService = {
 	minifyHTML: (scrapedHtml) => {
@@ -99,13 +113,13 @@ export const scrapeService = {
 					},
 				});
 			if (!endPoints.length) {
-				throw new Error("No endpoints were found");
-
+				throw new Error(
+					"No endpoints were found"
+				);
 			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
 			);
-
 
 			const storageUnits = await Promise.all(
 				endPoints.map(async (endPoint) => {
@@ -151,8 +165,9 @@ export const scrapeService = {
 					},
 				});
 			if (!endPoints.length) {
-				throw new Error("No endpoints were found");
-
+				throw new Error(
+					"No endpoints were found"
+				);
 			}
 			logger.info(
 				`Scraping ${endPoints.length} endpoints`
@@ -232,31 +247,29 @@ export const scrapeService = {
 	// 	}
 	// },
 
-	// scrapeStorageRentalsOnce: async (req, res) => {
-	// 	let extractedStorageRentalsData;
-	// 	try {
-	// 		let data;
-	// 			.getScrapedDOM(
-	// 				"https://www.sroa.com/storage-units/tennessee/old-hickory"
-	// 			)
-	// 			.then(function (response) {
-	// 				let decoder = new TextDecoder();
-	// 				let text = decoder.decode(
-	// 					response.data
-	// 				);
-	// 				data = scrapeService.minifyHTML(text);
-	// 				console.log(data);
-	// 				extractedStorageRentalsData =
-	// 					parseStorageRentalsData(data);
-	// 				res.send(data);
-	// 			})
-	// 			.catch((e) => console.log(e));
-	// 	} catch (error) {
-	// 		logger.error(
-	// 			`Error scraping StorageRentals: ${error}`
-	// 		);
-	// 	}
-	// },
+	scrapeStorageRentalsOnce: async (url) => {
+		let extractedStorageRentalsData;
+		try {
+			let data;
+			logger.info(
+				`Scraping ${"https://www.sroa.com/storage-units/tennessee/goodlettsville-main-street"}`
+			);
+
+			const scraped = await getScrapedDOM(
+				"https://www.sroa.com/storage-units/tennessee/goodlettsville-main-street",
+				".ant-list-items"
+			);
+			let decoder = new TextDecoder();
+			let text = decoder.decode(scraped);
+			data = scrapeService.minifyHTML(text);
+			extractedStorageRentalsData =
+				parseStorageRentalsData(data);
+		} catch (error) {
+			logger.error(
+				`Error scraping StorageRentals: ${error}`
+			);
+		}
+	},
 
 	scrapeIStorageOnce: async (url) => {
 		let extractedIStorageData;
@@ -274,7 +287,17 @@ export const scrapeService = {
 			extractedIStorageData =
 				parseIStorageData(data);
 
-			return extractedIStorageData;
+			if (
+				storageUnitsSchema.safeParse(
+					extractedIStorageData
+				)
+			) {
+				return extractedIStorageData;
+			} else {
+				logger.error(
+					`Error scraping IStorage UNIT: ${extractedIStorageData}`
+				);
+			}
 		} catch (error) {
 			logger.error(
 				`Error scraping IStorage: ${error}`
@@ -297,7 +320,17 @@ export const scrapeService = {
 			extractedStorePlacedata =
 				extractStorePlace(data);
 
-			return extractedStorePlacedata;
+			if (
+				storageUnitsSchema.safeParse(
+					extractedStorePlacedata
+				)
+			) {
+				return extractedStorePlacedata;
+			} else {
+				logger.error(
+					`Error scraping IStorage UNIT: ${extractedStorePlacedata}`
+				);
+			}
 		} catch (error) {
 			logger.error(
 				`Error scraping StorPlace: ${error}`
