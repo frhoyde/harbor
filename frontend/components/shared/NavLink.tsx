@@ -18,7 +18,7 @@ const NavLink = ({ href, name, icon }: INavLink) => {
       href={href}
       className={cn(
         { "bg-secondary text-white": isActive },
-        "flex items-center space-x-2 mb-4 p-3 rounded-md"
+        "flex items-center space-x-2 mb-4 p-3 rounded-md text-sm"
       )}
     >
       {icon}

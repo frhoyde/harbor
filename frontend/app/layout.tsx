@@ -45,12 +45,13 @@ export default async function RootLayout({
           <div className="flex min-h-screen w-full   relative">
             <div className="grow-[15%] pt-16 pb-8 h-screen sticky top-0 left-0 self-start">
               <div className="border-r px-4 h-full flex flex-col">
-                <div className="mb-10">
+                <div className="mb-10 mx-auto">
                   <Image
                     src="/logo.png"
                     alt="Harbor"
                     width={200}
                     height={200}
+                    className="w-32 h-auto"
                   />
                 </div>
                 <div className="flex flex-col justify-between flex-1">

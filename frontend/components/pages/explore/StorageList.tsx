@@ -4,7 +4,7 @@ import type { IStorage } from "@/types";
 
 const StorageList = ({ storages }: { storages: IStorage[] }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 basis-[40%]">
       {storages.map((storage) => (
         <StorageCard key={storage.id} storage={storage} />
       ))}

@@ -11,7 +11,7 @@ const Auth = () => {
     return (
       <div className="flex justify-center flex-col items-center gap-4">
         <div className="flex gap-4 items-center">
-          <div className=" w-12 h-12 rounded-full overflow-hidden ">
+          <div className=" w-12 h-12 rounded-full overflow-hidden  ">
             <Image
               src={user?.image ?? "/avatar.png"}
               width={50}
@@ -20,7 +20,7 @@ const Auth = () => {
               className="object-cover object-center w-full h-full"
             />
           </div>
-          <div>
+          <div className="text-xs">
             <p>Welcome Back</p>
             <p className="capitalize">{user.name}</p>
           </div>

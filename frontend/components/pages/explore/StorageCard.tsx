@@ -12,7 +12,7 @@ const StorageCard = ({ storage }: { storage: IStorage }) => {
   return (
     <div
       onClick={() => setSelectedStorage(storage.id)}
-      className="shadow-md p-6 rounded-lg flex gap-8 cursor-pointer hover:shadow-lg transition-all duration-300 ease-in-out bg-white"
+      className="shadow-md p-3 rounded-lg flex gap-8 cursor-pointer hover:shadow-lg transition-all duration-300 ease-in-out bg-white"
     >
       <div className="rounded-lg overflow-hidden w-24 aspect-square">
         <Image
@@ -23,17 +23,17 @@ const StorageCard = ({ storage }: { storage: IStorage }) => {
           className="w-full h-full object-cover object-center"
         />
       </div>
-      <div className="flex gap-4 flex-col">
+      <div className="flex gap-3 flex-col">
         <Image
           src={storage.companyLogo}
           alt={storage.title}
           width={50}
           height={50}
         />
-        <p className="text-lg font-semibold">{storage.title}</p>
-        <p className="text-harbor-gray-foreground flex items-center gap-2">
+        <p className="text-md font-semibold">{storage.title}</p>
+        <p className="text-harbor-gray-foreground flex items-center gap-2 text-xs">
           {" "}
-          <MapPinIcon size={24} /> {storage.location}
+          <MapPinIcon size={20} /> {storage.location}
         </p>
       </div>
     </div>

@@ -14,11 +14,11 @@ const FacilityFilter = () => {
   ];
 
   return (
-    <div className="flex items-center space-x-4 mb-8">
+    <div className="flex items-center space-x-3 mb-8">
       {filters.map((filter, i) => (
         <Fragment key={filter.value}>
           <button
-            className={cn("flex items-center gap-2", {
+            className={cn("flex items-center gap-2 text-xs", {
               " text-secondary ": activeFilter === filter.value,
             })}
             onClick={() => setActiveFilter(filter.value)}
