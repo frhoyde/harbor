@@ -17,7 +17,9 @@ const RateDifference = ({
         "text-red-500": difference < 0,
       })}
     >
-      <p>{`${difference > 0 ? "+" : "-"}$${difference.toLocaleString()}`}</p>
+      <p>{`${difference > 0 ? "+" : "-"}$${Math.abs(
+        difference
+      ).toLocaleString()}`}</p>
       <p>{`(${differencePercentage.toLocaleString()}%)`}</p>
     </div>
   );
