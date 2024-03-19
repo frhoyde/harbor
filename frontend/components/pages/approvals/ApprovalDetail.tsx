@@ -52,7 +52,7 @@ const ApprovalDetail = ({
               </div>
               <h2 className="text-xl font-bold">{approval?.name}</h2>
               <p>{approval?.description}</p>
-              <ul className="mt-8 flex flex-col gap-4 max-w-fit">
+              <ul className="mt-8 flex flex-col gap-4 ">
                 <li className="flex justify-between items-center gap-8">
                   <span className="text-harbor-gray-foreground">
                     Submitted by

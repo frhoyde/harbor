@@ -3,11 +3,15 @@ export interface IStorage {
   image: string;
   companyLogo: string;
   title: string;
-  location: string;
+  address: string;
   lastUpdated: string;
   units: {
     dimensions: string;
     price: number;
     special: string;
   }[];
+  location: {
+    lat: number;
+    lng: number;
+  };
 }

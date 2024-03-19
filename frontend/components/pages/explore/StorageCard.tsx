@@ -32,8 +32,7 @@ const StorageCard = ({ storage }: { storage: IStorage }) => {
         />
         <p className="text-md font-semibold">{storage.title}</p>
         <p className="text-harbor-gray-foreground flex items-center gap-2 text-xs">
-          {" "}
-          <MapPinIcon size={20} /> {storage.location}
+          <MapPinIcon size={20} /> {storage.address}
         </p>
       </div>
     </div>

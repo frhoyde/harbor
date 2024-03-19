@@ -52,7 +52,7 @@ const StorageInfo = ({ storages }: IStorageInfo) => {
             <p className="font-bold">{storageInfo.title}</p>
             <p className="flex items-center gap-2">
               {" "}
-              <MapPinIcon /> {storageInfo.location}
+              <MapPinIcon /> {storageInfo.address}
             </p>
           </div>
           <div className="h-10 aspect-video">
