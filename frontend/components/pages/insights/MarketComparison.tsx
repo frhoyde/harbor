@@ -1,6 +1,12 @@
 "use client";
 import ViewDetails from "@/components/shared/ViewDetails";
-import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  ChartData,
+  ChartOptions,
+} from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
 
@@ -18,7 +24,7 @@ const labelMap: {
   UHaul: "/storage/company/4.png",
 };
 
-export const data = {
+export const data: ChartData<"doughnut"> = {
   labels: ["Public Storage", "Prime Storage", "StorPlace", "UHaul"],
   datasets: [
     {
@@ -77,7 +83,7 @@ const doughnutLabelsLine = {
   },
 };
 
-const options = {
+const options: ChartOptions<"doughnut"> = {
   layout: {
     padding: 10,
   },

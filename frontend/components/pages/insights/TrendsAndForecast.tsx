@@ -13,6 +13,7 @@ import {
   ChartData,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import RevenueTrends from "./RevenueTrends";
 const labels = [
   "2014",
   "2015",
@@ -100,14 +101,8 @@ const TrendsAndForecast = () => {
             </div>
           </div>
         </div>
-        <div className="basis-1/2 px-2 ">
-          <div className="flex justify-between ">
-            <h2>Revenue Trends</h2>
-            <div className="flex items-center space-x-2">
-              <p className="text-gray-400 text-xs">Last 3 years</p>
-              <p className="text-xs text-green-400">+0.53%</p>
-            </div>
-          </div>
+        <div className="basis-1/2 px-2 pl-5 ">
+          <RevenueTrends />
         </div>
       </div>
       <div className="pt-4">

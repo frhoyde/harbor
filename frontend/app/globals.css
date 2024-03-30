@@ -94,3 +94,9 @@
 .progressbar>div{
   @apply  bg-[#6EA7FF];
 }
+.progress-yellow>div{
+  @apply  bg-[#FFB703];
+}
+.progress-pink>div{
+  @apply  bg-[#FFACFC];
+}
