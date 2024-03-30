@@ -77,4 +77,20 @@
   body {
     @apply bg-background text-foreground;
   }
+  h2{
+    @apply font-bold text-base;
+  }
+  h3{
+    @apply font-bold text-xs;
+  }
+}
+
+@layer utilities {
+  .insight-card {
+    @apply p-4 rounded-lg shadow;
+  }
+}
+
+.progressbar>div{
+  @apply  bg-[#6EA7FF];
 }

@@ -43,7 +43,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Provider session={session}>
           <div className="flex min-h-screen w-full   relative">
-            <div className="grow-[15%] pt-16 pb-8 h-screen sticky top-0 left-0 self-start">
+            <div className="grow-[15%] pt-8 pb-8 h-screen sticky top-0 left-0 self-start">
               <div className="border-r px-4 h-full flex flex-col">
                 <div className="mb-10 mx-auto">
                   <Image
@@ -71,10 +71,10 @@ export default async function RootLayout({
               </div>
             </div>
             <div className="flex-1 relative flex flex-col ">
-              <div className="sticky top-0 left-0 self-start pt-16 pb-8 px-12 w-full bg-background z-50 ">
+              <div className="sticky top-0 left-0 self-start pt-8 pb-8 px-3 w-full bg-background z-50 ">
                 <TopNav navigation={navigation} />
               </div>
-              <div className="px-12">{children}</div>
+              <div className="px-3">{children}</div>
             </div>
           </div>
         </Provider>
