@@ -1,5 +1,6 @@
 "use client";
 import ViewDetails from "@/components/shared/ViewDetails";
+import { cn } from "@/lib/utils";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -7,6 +8,7 @@ import {
   ChartData,
   ChartOptions,
 } from "chart.js";
+import { usePathname } from "next/navigation";
 
 import { Doughnut } from "react-chartjs-2";
 
@@ -173,24 +175,46 @@ const options: ChartOptions<"doughnut"> = {
   },
 };
 const MarketComparison = () => {
+  const pathname = usePathname();
+  const isDashboard = pathname === "/";
+
   return (
-    <div className="card">
-      <h2>Market Comparison</h2>
+    <div className={cn({ card: !isDashboard, "mt-6": isDashboard })}>
+      {isDashboard ? <h3>Market Comparison</h3> : <h2>Market Comparison</h2>}
+
       <div className="mt-4 grid grid-cols-12 gap-2 items-center">
-        <div className="relative col-span-6 ">
-          <Doughnut
-            data={data}
-            options={options}
-            plugins={[doughnutLabelsLine]}
-          />
+        <div
+          className={cn("relative col-span-6 ", { "col-span-4": isDashboard })}
+        >
+          {isDashboard ? (
+            <Doughnut data={data} options={options} />
+          ) : (
+            <Doughnut
+              data={data}
+              options={options}
+              plugins={[doughnutLabelsLine]}
+            />
+          )}
+
           <p className="text-xs absolute top-1/2 left-1/2 z-10 font-bold -translate-x-1/2 -translate-y-1/2 w-10 text-center">
             Market share
           </p>
         </div>
-        <div className="col-span-6">
-          <h3 className="text-center">Total sales per facility</h3>
+        <div
+          className={cn("col-span-6", {
+            "flex gap-2 items-center col-span-6 col-start-6 w-full":
+              isDashboard,
+          })}
+        >
+          <h3
+            className={cn("text-center", {
+              "[writing-mode:vertical-lr]": isDashboard,
+            })}
+          >
+            Total sales per facility
+          </h3>
           <ul>
-            <li className="p-1 flex text-xs justify-between border-b text-green-500">
+            <li className="p-1 flex gap-2 text-xs justify-between border-b text-green-500">
               <span>1st</span>
               <span>
                 <img
@@ -241,9 +265,11 @@ const MarketComparison = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-end">
-        <ViewDetails href="#" />
-      </div>
+      {!isDashboard ? (
+        <div className="flex justify-end">
+          <ViewDetails href="#" />
+        </div>
+      ) : null}
     </div>
   );
 };

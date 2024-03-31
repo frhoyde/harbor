@@ -1,13 +1,7 @@
 "use client";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartOptions,
-  ChartData,
-} from "chart.js";
+import { cn } from "@/lib/utils";
+import { Chart as ChartJS, ChartOptions, ChartData } from "chart.js";
+import { usePathname } from "next/navigation";
 import { Line } from "react-chartjs-2";
 
 const MONTHS = [
@@ -76,35 +70,60 @@ const data: ChartData<"line"> = {
   ],
 };
 const RevenueTrends = () => {
+  const pathname = usePathname();
+  const isDashboard = pathname === "/";
   return (
-    <>
-      <div className="flex justify-between ">
-        <h2>Revenue Trends</h2>
-        <div className="flex items-center space-x-2">
-          <p className="text-gray-400 text-xs">Last 3 years</p>
-          <p className="text-xs text-green-400">+0.53%</p>
+    <div>
+      <div className={cn({ "bg-gray-200 card": isDashboard })}>
+        <div className="flex justify-between ">
+          {isDashboard ? (
+            <div
+              className={cn("flex flex-col gap-2 ", { "gap-1": isDashboard })}
+            >
+              <h3 className="text-white">Revenue Trends</h3>
+              <p className="text-white text-xs">Last 3 years</p>
+            </div>
+          ) : (
+            <h2>Revenue Trends</h2>
+          )}
+          {isDashboard ? (
+            <p className="text-xs text-green-400">+0.53%</p>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <p className="text-gray-400 text-xs">Last 3 years</p>
+              <p className="text-xs text-green-400">+0.53%</p>
+            </div>
+          )}
         </div>
-      </div>
-      <div className="mt-2 ">
-        <Line options={options} data={data} />
-        <div className="mt-2">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#0700AF] rounded-full"></div>
-              <p className="text-xs">2022</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#0031FF] rounded-full"></div>
-              <p className="text-xs">2023</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#8000FF] rounded-full"></div>
-              <p className="text-xs">2024</p>
+        <div className="mt-2 ">
+          <Line options={options} data={data} />
+          <div className="mt-2">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[#0700AF] rounded-full"></div>
+                <p className="text-xs">2022</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[#0031FF] rounded-full"></div>
+                <p className="text-xs">2023</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[#8000FF] rounded-full"></div>
+                <p className="text-xs">2024</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+      {isDashboard ? (
+        <div className=" mt-2 p-2 rounded-md border border-green-600">
+          <div className="flex items-center space-x-2">
+            <h3>Expected Revenue</h3>
+            <p className="text-xs text-green-600 font-bold">+2.37%</p>
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 

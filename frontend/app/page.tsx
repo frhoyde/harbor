@@ -2,7 +2,10 @@ import ApprovalsTable from "@/components/pages/approvals/ApprovalsTable";
 import StorageMiniCarousel from "@/components/pages/dashboard/StorageMiniCarousel";
 import StorageMap from "@/components/pages/explore/StorageMap";
 import FinancialMetrics from "@/components/pages/insights/FinancialMetrics";
+import MarketComparison from "@/components/pages/insights/MarketComparison";
+import OccupancyRate from "@/components/pages/insights/OccupancyRate";
 import PricingAnalysis from "@/components/pages/insights/PricingAnalysis";
+import RevenueTrends from "@/components/pages/insights/RevenueTrends";
 import GoButton from "@/components/shared/GoButton";
 import { storages } from "@/lib/data";
 import { CheckIcon, TimerIcon, XIcon } from "lucide-react";
@@ -84,8 +87,20 @@ export default function Home() {
             <GoButton href="/insights" name="Insights" />
           </div>
           <div className="mt-4 flex gap-3">
-            <div className="basis-1/2"></div>
-            <div className="basis-1/2 flex flex-col gap-3">
+            <div className="basis-8/12   ">
+              <div className="flex gap-3">
+                <div className="basis-1/2">
+                  <OccupancyRate />
+                </div>
+                <div className="basis-1/2">
+                  <RevenueTrends />
+                </div>
+              </div>
+              <div className="">
+                <MarketComparison />
+              </div>
+            </div>
+            <div className="basis-4/12 flex flex-col gap-3">
               <PricingAnalysis />
               <FinancialMetrics />
             </div>

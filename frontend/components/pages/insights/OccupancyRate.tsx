@@ -1,15 +1,7 @@
 "use client";
 import { badgeVariants } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartOptions,
-  ChartData,
-} from "chart.js";
+
+import { Chart as ChartJS, ChartOptions, ChartData } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { usePathname } from "next/navigation";
 import ViewDetails from "@/components/shared/ViewDetails";
@@ -68,38 +60,67 @@ const OccupancyRate = () => {
   const isDashboard = pathname === "/";
   return (
     <div>
-      <div className="flex justify-between ">
-        <h2>Occupancy Rates</h2>
-        <div className="flex items-center space-x-2">
-          <p className="text-gray-400 text-xs">Last 10 years</p>
-          <p className="text-xs text-green-400">+80.5%</p>
+      <div className={cn({ "bg-gray-200 card": isDashboard })}>
+        <div className="flex justify-between ">
+          {isDashboard ? (
+            <div
+              className={cn("flex flex-col gap-2 ", {
+                "gap-1 mb-6": isDashboard,
+              })}
+            >
+              <h3 className="text-white">Occupancy Rates</h3>
+              <p className="text-white text-xs">Last 10 years</p>
+            </div>
+          ) : (
+            <h2>Occupancy Rates</h2>
+          )}
+          {isDashboard ? (
+            <p className="text-xs text-green-400">+80.5%</p>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <p className="text-gray-400 text-xs">Last 10 years</p>
+              <p className="text-xs text-green-400">+80.5%</p>
+            </div>
+          )}
+        </div>
+        <div className="mt-2">
+          <Line options={options} data={data} />
+          {!isDashboard ? (
+            <>
+              <div className="flex gap-1 mt-2">
+                <button
+                  className={cn(
+                    badgeVariants({ variant: "outline" }),
+                    "border-[#FFB703] "
+                  )}
+                >
+                  Small
+                </button>
+                <button className={cn(badgeVariants({ variant: "outline" }))}>
+                  Medium
+                </button>
+                <button className={cn(badgeVariants({ variant: "outline" }))}>
+                  Large
+                </button>
+                <button className={cn(badgeVariants({ variant: "outline" }))}>
+                  Climate-Controlled
+                </button>
+              </div>
+              <div className="flex justify-end mt-3 pb-3">
+                <ViewDetails href="#" />
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
-      <div className="mt-2">
-        <Line options={options} data={data} />
-        <div className="flex gap-1 mt-2">
-          <button
-            className={cn(
-              badgeVariants({ variant: "outline" }),
-              "border-[#FFB703] "
-            )}
-          >
-            Small
-          </button>
-          <button className={cn(badgeVariants({ variant: "outline" }))}>
-            Medium
-          </button>
-          <button className={cn(badgeVariants({ variant: "outline" }))}>
-            Large
-          </button>
-          <button className={cn(badgeVariants({ variant: "outline" }))}>
-            Climate-Controlled
-          </button>
+      {isDashboard ? (
+        <div className=" mt-2 p-2 rounded-md border border-green-600">
+          <div className="flex items-center space-x-2">
+            <h3>Expected OR</h3>
+            <p className="text-xs text-green-600 font-bold">+10.5%</p>
+          </div>
         </div>
-        <div className="flex justify-end mt-3 pb-3">
-          <ViewDetails href="#" />
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
