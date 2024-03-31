@@ -44,8 +44,8 @@ export default async function RootLayout({
         <Provider session={session}>
           <div className="flex min-h-screen w-full   relative">
             <div className="grow-[15%] pt-8 pb-8 h-screen sticky top-0 left-0 self-start">
-              <div className="border-r px-4 h-full flex flex-col">
-                <div className="mb-10 mx-auto">
+              <div className="border-r px-4 h-full ">
+                <div className="mb-10 mx-auto h-[26px]">
                   <Image
                     src="/logo.png"
                     alt="Harbor"
@@ -54,7 +54,7 @@ export default async function RootLayout({
                     className="w-32 h-auto"
                   />
                 </div>
-                <div className="flex flex-col justify-between flex-1">
+                <div className="flex flex-col justify-between h-full">
                   <nav>
                     <ul className="flex flex-col">
                       {navigation.map((nav) => (

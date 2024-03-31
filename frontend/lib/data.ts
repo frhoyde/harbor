@@ -74,3 +74,34 @@ export const storages: IStorage[] = [
     },
   },
 ];
+
+export const approvalsOverview = [
+  {
+    name: "Rate Change Request for 5’x10’ H&C",
+    description:
+      "Considering the recent rate changes on 2023-01-01 (+5.00) and 2023-03-15 (-3.00), it’s recommended to implement a rate increase of $7.50 on 2023-05-01. This adjustment aligns with market trends and ensures competitiveness while maximizing revenue for Public Storage. Additionally, competitors A and C have lower prices, presenting an opportunity to capture a higher share of the market.",
+    submittedBy: "Harbor AI",
+    size: "5’x10’",
+    type: ["climate - controlled"],
+    requestID: "#1",
+    currentRate: 164,
+    proposedRate: 170.0,
+
+    status: "approved",
+    createdAt: "2015-03-25T12:00:00Z",
+  },
+  {
+    name: "Rate Change Request for 10’x10’ non-climate",
+    description:
+      "Based on recent market analysis, proposing a rate increase of $8.50 for 10’x10’ non-climate storage units effective from 2023-06-01. This adjustment aims to optimize revenue streams and maintain competitive pricing against market rivals.",
+    submittedBy: "Peak Analytica",
+    size: "10’x10’",
+    type: ["non-climate", "large", "small"],
+    requestID: "#2",
+    currentRate: 280,
+    proposedRate: 208.5,
+
+    status: "pending",
+    createdAt: "2019-10-18T12:00:00Z",
+  },
+];
