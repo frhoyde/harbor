@@ -3,7 +3,18 @@ import { IStorage } from "@/types";
 import { useMemo } from "react";
 import Map, { Marker } from "react-map-gl/maplibre";
 import Pin from "./Pin";
-const StorageMap = ({ storages }: { storages: IStorage[] }) => {
+import { useExploreStore } from "@/store";
+const StorageMap = ({
+  storages,
+  zoom = 12,
+}: {
+  storages: IStorage[];
+  zoom?: number;
+}) => {
+  console.log("rendered");
+  const setSelectedStorage = useExploreStore(
+    (state) => state.setSelectedStorage
+  );
   const pins = useMemo(
     () =>
       storages.map((storage, index) => (
@@ -16,6 +27,7 @@ const StorageMap = ({ storages }: { storages: IStorage[] }) => {
             // If we let the click event propagates to the map, it will immediately close the popup
             // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
+            setSelectedStorage(storage.id);
           }}
         >
           <Pin storage={storage} />
@@ -26,10 +38,11 @@ const StorageMap = ({ storages }: { storages: IStorage[] }) => {
   return (
     <>
       <Map
+        attributionControl={false}
         initialViewState={{
-          longitude: -86.56,
-          latitude: 36.330056,
-          zoom: 12,
+          longitude: -86.589705,
+          latitude: 36.3234692,
+          zoom,
         }}
         style={{
           width: "100%",

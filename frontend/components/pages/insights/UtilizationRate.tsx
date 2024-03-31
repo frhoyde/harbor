@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 
 const UtilizationRate = () => {
   return (
-    <div className="insight-card">
+    <div className="card">
       <div className="flex justify-between  ">
         <h2>Utilization Rates</h2>
         <ViewDetails href="#" />

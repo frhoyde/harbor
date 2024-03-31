@@ -36,7 +36,7 @@ const options: ChartOptions<"doughnut"> = {
 
 const CustomerSegmentation = () => {
   return (
-    <div className="insight-card">
+    <div className="card">
       <div className="flex justify-between  ">
         <h2>Customer Segmentation</h2>
         <ViewDetails href="#" />

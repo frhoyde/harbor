@@ -174,7 +174,7 @@ const options: ChartOptions<"doughnut"> = {
 };
 const MarketComparison = () => {
   return (
-    <div className="insight-card">
+    <div className="card">
       <h2>Market Comparison</h2>
       <div className="mt-4 grid grid-cols-12 gap-2 items-center">
         <div className="relative col-span-6 ">

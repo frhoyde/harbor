@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -5,9 +6,10 @@ const TypePill = ({ types }: { types: string[] }) => {
   return (
     <div className="flex items-center flex-wrap gap-2">
       {types.map((type) => (
-        <p
+        <Badge
+          variant="outline"
           key={type}
-          className={cn("max-w-fit p-2 rounded-lg border", {
+          className={cn("text-xs text-nowrap", {
             "border-blue-500": type === "small",
             "border-green-500": type === "large",
             "border-yellow-500": type === "medium",
@@ -16,7 +18,7 @@ const TypePill = ({ types }: { types: string[] }) => {
           })}
         >
           {type}
-        </p>
+        </Badge>
       ))}
     </div>
   );

@@ -11,7 +11,7 @@ interface IExploreStore {
 export const useExploreStore = create<IExploreStore>((set) => ({
   activeFilter: "all",
   selectedStorage: null,
-  setSelectedStorage: (storage) => set({ selectedStorage: storage }),
+  setSelectedStorage: (storageID) => set({ selectedStorage: storageID }),
   removeSelectedStorage: () => set({ selectedStorage: null }),
   updateFilter: (filter) => set({ activeFilter: filter }),
 }));
