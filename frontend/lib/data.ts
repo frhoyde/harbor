@@ -5,8 +5,8 @@ export const storages: IStorage[] = [
     id: 1,
     image: "/storage/1.jpg",
     companyLogo: "/storage/company/1.png",
-    title: "Public Storage of Lorem Ipsum 1",
-    address: "1234 Lorem Ipsum Dr 1",
+    title: "Public Storage",
+    address: "Glendale, California, United States",
     lastUpdated: "04/02/2024",
     units: [
       { dimensions: "10x10 GI", price: 100, special: "1 month free" },
@@ -23,7 +23,7 @@ export const storages: IStorage[] = [
     id: 2,
     image: "/storage/2.jpg",
     companyLogo: "/storage/company/2.png",
-    title: "Public Storage of Lorem Ipsum 2",
+    title: "Prime Storage",
     address: "1234 Lorem Ipsum Dr 2",
     lastUpdated: "04/02/2024",
     units: [
@@ -39,9 +39,9 @@ export const storages: IStorage[] = [
   },
   {
     id: 3,
-    image: "/storage/3.jpg",
+    image: "/storage/4.jpg",
     companyLogo: "/storage/company/3.png",
-    title: "Public Storage of Lorem Ipsum 3",
+    title: "StorPlace Self-Storage",
     address: "1234 Lorem Ipsum Dr 3",
     lastUpdated: "04/02/2024",
     units: [
@@ -57,10 +57,10 @@ export const storages: IStorage[] = [
   },
   {
     id: 4,
-    image: "/storage/4.jpg",
+    image: "/storage/3.jpg",
     companyLogo: "/storage/company/4.png",
-    title: "Public Storage of Lorem Ipsum 4",
-    address: "1234 Lorem Ipsum Dr 4",
+    title: "U-Haul",
+    address: "Phoenix, Arizona, United States",
     lastUpdated: "04/02/2024",
     units: [
       { dimensions: "10x10 GI", price: 100, special: "1 month free" },

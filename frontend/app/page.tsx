@@ -16,7 +16,7 @@ export default function Home() {
       <div className="card w-full">
         <div className="mb-4 flex justify-between">
           <h2>
-            Approvals Overview{" "}
+            Proposals Overview{" "}
             <span className="text-gray-400 text-sm font-normal">
               (latest updates)
             </span>
@@ -45,7 +45,7 @@ export default function Home() {
         <div>
           <ApprovalsTable approvals={approvalsOverview} />
           <div className="flex justify-center mt-4">
-            <GoButton href="/approvals" name="Approvals" />
+            <GoButton href="/proposals" name="Proposals" />
           </div>
         </div>
       </div>

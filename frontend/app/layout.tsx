@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 const navigation = [
   { name: "Dashboard", href: "/", icon: <HomeIcon /> },
   { name: "Explore", href: "/explore", icon: <PinIcon /> },
-  { name: "Approvals", href: "/approvals", icon: <CircleCheckIcon /> },
+  { name: "Proposals", href: "/proposals", icon: <CircleCheckIcon /> },
   { name: "Insights", href: "/insights", icon: <LineChartIcon /> },
 ];
 

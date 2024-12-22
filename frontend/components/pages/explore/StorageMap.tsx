@@ -11,7 +11,6 @@ const StorageMap = ({
   storages: IStorage[];
   zoom?: number;
 }) => {
-  console.log("rendered");
   const setSelectedStorage = useExploreStore(
     (state) => state.setSelectedStorage
   );

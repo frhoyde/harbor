@@ -9,27 +9,28 @@ function Pin({ storage }: { storage: IStorage }) {
   return (
     <div className="relative cursor-pointer">
       <svg
-        width="60"
-        height="72"
+        width="90"
+        height="108"
         viewBox="0 0 90 108"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="w-20 "
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M47.7358 54.1984C55.1725 48.7386 60 39.933 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 39.7129 4.61588 48.3478 11.7737 53.8305L29.5 72L47.7358 54.1984Z"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M71.6037 81.2976C82.7588 73.108 90 59.8995 90 45C90 20.1472 69.8528 0 45 0C20.1472 0 0 20.1472 0 45C0 59.5694 6.92382 72.5217 17.6606 80.7458L44.25 108L71.6037 81.2976Z"
           fill={selectedStorage === storage.id ? "#FFB703" : "#6EA7FF"}
         />
-        <circle cx="30" cy="30" r="27" fill="white" />
+        <circle cx="45" cy="45" r="40.5" fill="white" />
       </svg>
-      <div className="absolute z-40 top-1/2 left-1/2 -translate-x-[25px] -translate-y-[25px] ">
+      <div className="absolute inset-0 flex items-center justify-center -translate-y-2">
         <Image
-          src={storage.companyLogo ?? "/companyLogo-placeholder.ong"}
+          src={storage.companyLogo ?? "/companyLogo-placeholder.png"}
           alt={storage.title}
           width={260}
           height={260}
-          className="w-16 h-auto"
+          className="w-12 h-12 object-contain rounded-full"
         />
       </div>
     </div>
